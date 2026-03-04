@@ -354,7 +354,7 @@ export default function Home() {
 
         <div className="footer__banner">
           <Image
-            src="/images/neversmall-logo-white2.png"
+            src="/images/neversmall-logo-white.png"
             alt="Neversmall"
             width={1200}
             height={200}
