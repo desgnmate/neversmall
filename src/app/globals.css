@@ -460,7 +460,7 @@ button {
 
 .hero__tagline {
   font-family: var(--font-subheader);
-  font-size: clamp(16px, 1.8vw, 22px);
+  font-size: clamp(16px, 1.8vw, 20px);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--color-black);
@@ -474,7 +474,7 @@ button {
 
 .hero__nav-link {
   font-family: var(--font-subheader);
-  font-size: clamp(16px, 1.8vw, 22px);
+  font-size: clamp(16px, 1.8vw, 20px);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-black);
