@@ -4,11 +4,23 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 const SERVICES_ITEMS = [
-    { label: "VIDEOGRAPHY", href: "#services", desc: "High-impact video production for brands, campaigns, and short-form content.", image: "/images/videography-service.jpg" },
-    { label: "PHOTOGRAPHY", desc: "Clean, professional imagery for products, lifestyle, and storytelling.", href: "#services", image: "/images/photography.jpg" },
-    { label: "SOCIAL MANAGEMENT", desc: "Strategic content planning and growth across social platforms.", href: "#services", image: "/images/social-management.jpg" },
-    { label: "META ADS", desc: "Targeted campaigns focused on reach and measurable results.", href: "#services", image: "/images/meta-ads.jpg" },
+    { label: "VIDEOGRAPHY", href: "/services/videography", desc: "High-impact video production for brands, campaigns, and short-form content.", image: "/images/videography-service.jpg" },
+    { label: "PHOTOGRAPHY", href: "/services/photography", desc: "Clean, professional imagery for products, lifestyle, and storytelling.", image: "/images/photography.jpg" },
+    { label: "SOCIAL MANAGEMENT", href: "/services/social-management", desc: "Strategic content planning and growth across social platforms.", image: "/images/social-management.jpg" },
+    { label: "META ADS", href: "/services/meta-ads", desc: "Targeted campaigns focused on reach and measurable results.", image: "/images/meta-ads.jpg" },
 ];
+
+const SplitText = ({ text }: { text: string }) => (
+    <>
+        <span className="span-mother" aria-hidden="true">
+            {text.split("").map((c, i) => <span key={i} style={{ transitionDelay: `${i * 0.03}s` }}>{c === " " ? "\u00A0" : c}</span>)}
+        </span>
+        <span className="span-mother2" aria-hidden="true">
+            {text.split("").map((c, i) => <span key={i} style={{ transitionDelay: `${i * 0.03}s` }}>{c === " " ? "\u00A0" : c}</span>)}
+        </span>
+        <span className="sr-only">{text}</span>
+    </>
+);
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -117,7 +129,9 @@ export default function Navbar() {
                                 onMouseEnter={() => setActiveService(idx)}
                                 style={{ animationDelay: `${0.1 + idx * 0.1}s` }}
                             >
-                                <span className="menu-overlay__service-label">{item.label}</span>
+                                <span className="menu-overlay__service-label">
+                                    <SplitText text={item.label} />
+                                </span>
                             </a>
                         ))}
                     </div>
@@ -130,8 +144,8 @@ export default function Navbar() {
                                 </div>
                                 <div className="menu-overlay__detail-info">
                                     <p className="menu-overlay__detail-desc">{item.desc}</p>
-                                    <a href={item.href} className="menu-overlay__detail-btn" onClick={close}>
-                                        Explore Service.
+                                    <a href={item.href} className="menu-overlay__detail-btn animated-link" onClick={close}>
+                                        <SplitText text="EXPLORE SERVICE" />
                                     </a>
                                 </div>
                             </div>
