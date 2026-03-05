@@ -7,13 +7,15 @@ interface Project {
     title: string;
     category: string;
     image: string;
+    slug?: string;
 }
 
 interface ProjectGalleryProps {
     projects: Project[];
+    className?: string;
 }
 
-export default function ProjectGallery({ projects }: ProjectGalleryProps) {
+export default function ProjectGallery({ projects, className }: ProjectGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
     const openModal = useCallback((index: number) => {
@@ -53,19 +55,19 @@ export default function ProjectGallery({ projects }: ProjectGalleryProps) {
 
     return (
         <>
-            <div className="projects__grid">
+            <div className={className || "projects__grid"}>
                 {projects.map((project, i) => (
                     <div
                         key={i}
                         className="projects__item"
                         aria-label={project.title}
-                        onClick={() => openModal(i)}
+                        onClick={() => project.slug ? (window.location.href = `/projects/${project.slug}`) : openModal(i)}
                         role="button"
                         tabIndex={0}
                         onKeyDown={(e) => {
                             if (e.key === "Enter" || e.key === " ") {
                                 e.preventDefault();
-                                openModal(i);
+                                project.slug ? (window.location.href = `/projects/${project.slug}`) : openModal(i);
                             }
                         }}
                     >

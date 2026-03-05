@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
+import Navbar from "./components/Navbar";
+import ConditionalFooter from "./components/ConditionalFooter";
 
 export const metadata: Metadata = {
   title: "Neversmall Studios — Creative Agency",
@@ -16,7 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <Navbar />
+          {children}
+          <ConditionalFooter />
+        </SmoothScroll>
       </body>
     </html>
   );

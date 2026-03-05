@@ -1,38 +1,14 @@
 import Image from "next/image";
-import Navbar from "../../components/Navbar";
-
-const AnimatedLink = ({ href, text, className }: { href: string; text: string; className?: string }) => {
-    return (
-        <a href={href} className={`animated-link ${className || ""}`}>
-            <span className="span-mother" aria-hidden="true">
-                {text.split("").map((char, index) => (
-                    <span key={index} style={{ transition: `${0.2 + index * 0.05}s` }}>
-                        {char === " " ? "\u00A0" : char}
-                    </span>
-                ))}
-            </span>
-            <span className="span-mother2" aria-hidden="true">
-                {text.split("").map((char, index) => (
-                    <span key={index} style={{ transition: `${0.2 + index * 0.05}s` }}>
-                        {char === " " ? "\u00A0" : char}
-                    </span>
-                ))}
-            </span>
-            <span className="sr-only">{text}</span>
-        </a>
-    );
-};
+import AnimatedLink from "../../components/AnimatedLink";
 
 export default function SocialManagementPage() {
     return (
-        <>
-            <Navbar />
-
+        <main className="service-wrapper">
             {/* Hero */}
             <section className="sp-hero" aria-label="Social Management hero">
                 <div className="sp-hero__bg">
                     <Image
-                        src="/images/social-management.jpg"
+                        src="/images/social-management-full.jpg"
                         alt="Strategic social media management"
                         fill
                         priority
@@ -112,6 +88,6 @@ export default function SocialManagementPage() {
                 <p className="sp-cta__sub">Stop posting. Start building a presence.</p>
                 <AnimatedLink href="/#cta" className="sp-cta__button" text="START A PROJECT" />
             </section>
-        </>
+        </main>
     );
 }

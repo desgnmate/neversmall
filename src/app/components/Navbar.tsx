@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const SERVICES_ITEMS = [
     { label: "VIDEOGRAPHY", href: "/services/videography", desc: "High-impact video production for brands, campaigns, and short-form content.", image: "/images/videography-service.jpg" },
@@ -31,6 +32,11 @@ const SplitText = ({ text }: { text: string }) => (
 );
 
 export default function Navbar() {
+    const pathname = usePathname();
+    const isHomePage = pathname === "/";
+    const isServicePage = pathname.startsWith("/services/");
+    const isOverlayPage = isServicePage; // Only service pages are overlay now
+
     const [isOpen, setIsOpen] = useState(false);
     const [activeService, setActiveService] = useState(0);
 
@@ -65,7 +71,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="navbar" role="navigation" aria-label="Main navigation">
+            <nav className={`navbar ${isOverlayPage ? 'navbar--overlay' : 'navbar--solid'} ${isServicePage ? 'navbar--light' : ''}`} role="navigation" aria-label="Main navigation">
                 <a href="/" className="navbar__logo" aria-label="Neversmall Studios home">
                     <Image
                         src="/images/logo.png"
@@ -77,7 +83,20 @@ export default function Navbar() {
                 </a>
 
                 <div className="navbar__actions">
-                    <a href="/#cta" className="navbar__cta-link animated-link">
+                    {!isHomePage && (
+                        <div className="navbar__links">
+                            <a href="/about" className="navbar__link animated-link">
+                                <SplitText text="ABOUT" />
+                            </a>
+                            <a href="/projects" className="navbar__link animated-link">
+                                <SplitText text="PROJECTS" />
+                            </a>
+                            <a href="/#services" className="navbar__link animated-link">
+                                <SplitText text="SERVICES" />
+                            </a>
+                        </div>
+                    )}
+                    <a href="/contact" className="navbar__cta-link animated-link">
                         <SplitText text="GET IN TOUCH" />
                     </a>
                     <button
