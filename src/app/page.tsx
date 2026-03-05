@@ -305,10 +305,10 @@ export default function Home() {
           <div className="footer__contact">
             <h3 className="footer__contact-headline">LET&apos;S WORK TOGETHER.</h3>
             <p className="footer__contact-desc">
-              Tell us about your brand, your goals, and what you&apos;re building.
+              Tell us about your brand, your<br />goals, and what you&apos;re building.
             </p>
             <p className="footer__contact-desc">
-              We&apos;ll help turn it into something impactful.
+              We&apos;ll help turn it into<br />something impactful.
             </p>
 
             <div className="footer__contact-info">
