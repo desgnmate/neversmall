@@ -2,6 +2,7 @@ import Image from "next/image";
 import ServiceItem from "./components/ServiceItem";
 import Testimonials from "./components/Testimonials";
 import ProjectGallery from "./components/ProjectGallery";
+import Navbar from "./components/Navbar";
 
 const MARQUEE_WORDS = [
   "VIDEOGRAPHY",
@@ -75,35 +76,13 @@ const AnimatedText = ({ text, className }: { text: string; className?: string })
 };
 
 export default function Home() {
-  // Duplicate the marquee items so the animation can loop seamlessly
-  const marqueeItems = [...MARQUEE_WORDS, ...MARQUEE_WORDS];
+  // Duplicate the marquee items 4× so the animation loops seamlessly
+  const marqueeItems = [...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS];
 
   return (
     <>
       {/* ── Navbar ── */}
-      <nav className="navbar" role="navigation" aria-label="Main navigation">
-        <a href="/" className="navbar__logo" aria-label="Neversmall Studios home">
-          <Image
-            src="/images/logo.png"
-            alt="Neversmall Studios logo"
-            width={180}
-            height={36}
-            priority
-          />
-        </a>
-
-        <div className="navbar__actions">
-          <AnimatedLink href="#contact" className="navbar__cta" text="GET IN TOUCH" />
-          <button
-            className="navbar__hamburger"
-            aria-label="Open menu"
-            type="button"
-          >
-            <span />
-            <span />
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* ── Hero ── */}
       <section className="hero" aria-label="Hero section">
