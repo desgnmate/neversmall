@@ -1835,7 +1835,7 @@ button {
   line-height: 1;
   text-transform: uppercase;
   color: var(--color-black);
-  margin-bottom: 100px;
+  margin-bottom: 48px;
   letter-spacing: -0.02em;
 }
 
@@ -1917,7 +1917,7 @@ button {
   }
 
   .sp-deliver__item {
-    padding: 40px 20px;
+    padding: 32px 20px;
   }
 
   /* sp-cta media queries removed */
@@ -1937,7 +1937,16 @@ button {
   .sp-hero {
     min-height: 100vh;
     height: 100vh;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .sp-hero__content {
     padding: 40px 20px;
+    width: 100%;
+    text-align: left;
   }
 
   .sp-overview {
@@ -1950,12 +1959,20 @@ button {
   }
 
   .sp-deliver {
-    padding: 60px 20px;
+    padding: 60px 0;
+  }
+
+  .sp-deliver__inner {
+    padding: 0 20px;
+  }
+
+  .sp-deliver__headline {
+    margin-bottom: 40px;
   }
 
   .sp-deliver__grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 0;
   }
 
   .sp-cta {
@@ -2379,12 +2396,13 @@ button {
   }
 
   .services__header {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    gap: 16px;
-    margin-bottom: 32px;
-    padding: 0 16px;
+    gap: 20px;
+    margin-bottom: 48px;
+    padding: 0 20px;
   }
 
   .service-item__content {
