@@ -11,7 +11,7 @@ export default function About() {
                     <div style={{ position: "relative", zIndex: 2 }}>
                         <h1 style={{
                             fontFamily: "var(--font-header)",
-                            fontSize: "clamp(48px, 8vw, 110px)",
+                            fontSize: "clamp(48px, 8vw, 90px)",
                             lineHeight: 1,
                             letterSpacing: "-0.04em",
                             textTransform: "uppercase",

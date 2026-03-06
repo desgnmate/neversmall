@@ -40,7 +40,7 @@ export default function Home() {
       {/* ── Hero ── */}
       <section className="hero" aria-label="Hero section">
         <h1 className="hero__headline">
-          DONT SELL
+          DON'T SELL
           <br />
           YOURSELF SHORT.
         </h1>

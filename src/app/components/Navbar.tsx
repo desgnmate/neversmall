@@ -115,7 +115,7 @@ export default function Navbar() {
 
             {/* Fullscreen Menu Overlay */}
             <div
-                className={`menu-overlay ${isOpen ? "menu-overlay--open" : ""}`}
+                className={`menu-overlay ${isOpen ? "menu-overlay--open" : ""} ${isHomePage ? "menu-overlay--home" : ""}`}
                 role="dialog"
                 aria-modal="true"
                 aria-label="Navigation menu"
@@ -145,20 +145,30 @@ export default function Navbar() {
                     {/* Desktop: Services View */}
                     <div className="menu-overlay__services-desktop">
                         <div className="menu-overlay__services-list">
-                            {SERVICES_ITEMS.map((item, idx) => (
-                                <a
-                                    key={item.label}
-                                    href={item.href}
-                                    className={`menu-overlay__service-link animated-link ${activeService === idx ? 'menu-overlay__service-link--active' : ''}`}
-                                    onClick={close}
-                                    onMouseEnter={() => setActiveService(idx)}
-                                    style={{ animationDelay: `${0.1 + idx * 0.1}s` }}
-                                >
-                                    <span className="menu-overlay__service-label">
-                                        <SplitText text={item.label} />
-                                    </span>
-                                </a>
-                            ))}
+                            {SERVICES_ITEMS.map((item, idx) => {
+                                const isMarquee = item.label === "SOCIAL MANAGEMENT";
+                                return (
+                                    <a
+                                        key={item.label}
+                                        href={item.href}
+                                        className={`menu-overlay__service-link animated-link ${activeService === idx ? 'menu-overlay__service-link--active' : ''} ${isMarquee ? 'menu-overlay__service-link--marquee' : ''}`}
+                                        onClick={close}
+                                        onMouseEnter={() => setActiveService(idx)}
+                                        style={{ animationDelay: `${0.1 + idx * 0.1}s` }}
+                                    >
+                                        <div className="menu-overlay__service-label-wrapper">
+                                            <span className="menu-overlay__service-label">
+                                                <SplitText text={item.label} />
+                                            </span>
+                                            {isMarquee && (
+                                                <span className="menu-overlay__service-label" aria-hidden="true">
+                                                    <SplitText text={item.label} />
+                                                </span>
+                                            )}
+                                        </div>
+                                    </a>
+                                );
+                            })}
                         </div>
 
                         <div className="menu-overlay__details">
