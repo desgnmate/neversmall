@@ -1,42 +1,51 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+if (!supabaseUrl || !supabaseAnonKey) {
+    if (process.env.NODE_ENV === 'production') {
+        console.warn("⚠️ [Supabase] Missing environment variables. Please add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your Vercel settings.");
+    }
+}
 
 let sessionToken: string | null = null;
 export function setSupabaseToken(token: string | null) {
     sessionToken = token;
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-    global: {
-        fetch: (url, options) => {
-            const h = new Headers(options?.headers);
+export const supabase = createClient(
+    supabaseUrl || 'https://placeholder.supabase.co',
+    supabaseAnonKey || 'placeholder',
+    {
+        global: {
+            fetch: (url, options) => {
+                const h = new Headers(options?.headers);
 
-            // Aggressive Cache-Control to ensure persistence across refreshes
-            h.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-            h.set('Pragma', 'no-cache');
-            h.set('Expires', '0');
+                // Aggressive Cache-Control to ensure persistence across refreshes
+                h.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+                h.set('Pragma', 'no-cache');
+                h.set('Expires', '0');
 
-            // Supabase PostgREST only accepts 3-part JWTs.
-            // Our PIN system returns hex tokens which 401 if sent as 'Bearer'.
-            // Verified via DB login records in RLS instead.
-            if (sessionToken && sessionToken.split('.').length === 3) {
-                h.set('Authorization', `Bearer ${sessionToken}`);
+                // Supabase PostgREST only accepts 3-part JWTs.
+                // Our PIN system returns hex tokens which 401 if sent as 'Bearer'.
+                // Verified via DB login records in RLS instead.
+                if (sessionToken && sessionToken.split('.').length === 3) {
+                    h.set('Authorization', `Bearer ${sessionToken}`);
+                }
+
+                // Convert to object for fetch compatibility
+                const headers: Record<string, string> = {};
+                h.forEach((v, k) => { headers[k] = v; });
+
+                return fetch(url, {
+                    ...options,
+                    headers,
+                    cache: 'no-store'
+                });
             }
-
-            // Convert to object for fetch compatibility
-            const headers: Record<string, string> = {};
-            h.forEach((v, k) => { headers[k] = v; });
-
-            return fetch(url, {
-                ...options,
-                headers,
-                cache: 'no-store'
-            });
         }
-    }
-});
+    });
 
 // ── Types ──
 export interface Project {
@@ -130,46 +139,67 @@ export function invalidateCache(key?: string): void {
 
 // ── Data Fetchers with Cache ──
 export async function fetchProjects(bypassCache = false): Promise<Project[]> {
-    if (!bypassCache) {
-        const cached = getCached<Project[]>('projects');
-        if (cached) return cached;
+    try {
+        if (!bypassCache) {
+            const cached = getCached<Project[]>('projects');
+            if (cached) return cached;
+        }
+        const { data, error } = await supabase
+            .from('projects')
+            .select('*')
+            .order('sort_order', { ascending: true });
+        if (error) {
+            console.error("Error fetching projects:", error);
+            return [];
+        }
+        const result = data ?? [];
+        setCache('projects', result);
+        return result;
+    } catch (e) {
+        console.error("Fetch Exception (projects):", e);
+        return [];
     }
-    const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .order('sort_order', { ascending: true });
-    if (error) throw error;
-    const result = data ?? [];
-    setCache('projects', result);
-    return result;
 }
 
 export async function fetchProjectBySlug(slug: string): Promise<Project | null> {
-    const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('slug', slug)
-        .maybeSingle();
-    if (error) {
-        console.error('fetchProjectBySlug error:', error);
+    try {
+        const { data, error } = await supabase
+            .from('projects')
+            .select('*')
+            .eq('slug', slug)
+            .maybeSingle();
+        if (error) {
+            console.error('fetchProjectBySlug error:', error);
+            return null;
+        }
+        return data as Project;
+    } catch (e) {
+        console.error(`Fetch Exception (project slug ${slug}):`, e);
         return null;
     }
-    return data as Project;
 }
 
 export async function fetchServices(bypassCache = false): Promise<Service[]> {
-    if (!bypassCache) {
-        const cached = getCached<Service[]>('services');
-        if (cached) return cached;
+    try {
+        if (!bypassCache) {
+            const cached = getCached<Service[]>('services');
+            if (cached) return cached;
+        }
+        const { data, error } = await supabase
+            .from('services')
+            .select('*')
+            .order('sort_order', { ascending: true });
+        if (error) {
+            console.error("Error fetching services:", error);
+            return [];
+        }
+        const result = data ?? [];
+        setCache('services', result);
+        return result;
+    } catch (e) {
+        console.error("Fetch Exception (services):", e);
+        return [];
     }
-    const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .order('sort_order', { ascending: true });
-    if (error) throw error;
-    const result = data ?? [];
-    setCache('services', result);
-    return result;
 }
 
 export async function fetchServiceBySlug(slug: string): Promise<Service | null> {
@@ -189,33 +219,49 @@ export async function fetchServiceBySlug(slug: string): Promise<Service | null> 
 }
 
 export async function fetchTestimonials(bypassCache = false): Promise<Testimonial[]> {
-    if (!bypassCache) {
-        const cached = getCached<Testimonial[]>('testimonials');
-        if (cached) return cached;
+    try {
+        if (!bypassCache) {
+            const cached = getCached<Testimonial[]>('testimonials');
+            if (cached) return cached;
+        }
+        const { data, error } = await supabase
+            .from('testimonials')
+            .select('*')
+            .order('sort_order', { ascending: true });
+        if (error) {
+            console.error("Error fetching testimonials:", error);
+            return [];
+        }
+        const result = data ?? [];
+        setCache('testimonials', result);
+        return result;
+    } catch (e) {
+        console.error("Fetch Exception (testimonials):", e);
+        return [];
     }
-    const { data, error } = await supabase
-        .from('testimonials')
-        .select('*')
-        .order('sort_order', { ascending: true });
-    if (error) throw error;
-    const result = data ?? [];
-    setCache('testimonials', result);
-    return result;
 }
 
 export async function fetchContactSettings(bypassCache = false): Promise<ContactSettings | null> {
-    if (!bypassCache) {
-        const cached = getCached<ContactSettings>('contact_settings');
-        if (cached) return cached;
+    try {
+        if (!bypassCache) {
+            const cached = getCached<ContactSettings>('contact_settings');
+            if (cached) return cached;
+        }
+        const { data, error } = await supabase
+            .from('contact_settings')
+            .select('*')
+            .limit(1)
+            .maybeSingle();
+        if (error) {
+            console.error("Error fetching contact settings:", error);
+            return null;
+        }
+        if (data) setCache('contact_settings', data);
+        return data;
+    } catch (e) {
+        console.error("Fetch Exception (contact_settings):", e);
+        return null;
     }
-    const { data, error } = await supabase
-        .from('contact_settings')
-        .select('*')
-        .limit(1)
-        .single();
-    if (error) throw error;
-    if (data) setCache('contact_settings', data);
-    return data;
 }
 
 // ── Image Upload ──

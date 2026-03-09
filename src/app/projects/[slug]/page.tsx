@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import AnimatedLink from "../../components/AnimatedLink";
 import Footer from "../../components/Footer";
 
+export const dynamic = 'force-dynamic';
+
 interface ProjectPageProps {
     params: Promise<{
         slug: string;
