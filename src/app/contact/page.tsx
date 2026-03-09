@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimatedLink from "../components/AnimatedLink";
+import { useCMS } from "../components/cms/CMSProvider";
 
 const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -47,6 +48,7 @@ const labelStyle = {
 };
 
 export default function Contact() {
+    const { contactSettings } = useCMS();
     return (
         <main className="page-wrapper contact-page" style={{ backgroundColor: "#F6F6F6", paddingBottom: "120px" }}>
 
@@ -159,7 +161,11 @@ export default function Contact() {
                         </div>
 
                         <div style={{ marginTop: "16px" }}>
-                            <AnimatedLink href="/contact" className="cta__button" text="START A PROJECT" />
+                            <AnimatedLink
+                                href={contactSettings?.cta_link || "/contact"}
+                                className="cta__button"
+                                text={contactSettings?.cta_text || "START A PROJECT"}
+                            />
                         </div>
                     </motion.div>
 
@@ -203,7 +209,7 @@ export default function Contact() {
                         </div>
                         <h4 style={{ fontFamily: "var(--font-subheader)", fontSize: "24px", fontWeight: 700, margin: 0 }}>Call & WhatsApp</h4>
                         <p style={{ fontFamily: "var(--font-body)", fontSize: "20px", lineHeight: 1.5, margin: 0, opacity: 0.8 }}>
-                            0432 300 709
+                            {contactSettings?.phone || "0432 300 709"}
                         </p>
                     </motion.div>
 
@@ -213,9 +219,8 @@ export default function Contact() {
                             <span style={{ fontSize: "16px" }}>⌂</span>
                         </div>
                         <h4 style={{ fontFamily: "var(--font-subheader)", fontSize: "24px", fontWeight: 700, margin: 0 }}>Location</h4>
-                        <p style={{ fontFamily: "var(--font-body)", fontSize: "20px", lineHeight: 1.5, margin: 0, opacity: 0.8 }}>
-                            Melbourne, VIC<br />
-                            Australia
+                        <p style={{ fontFamily: "var(--font-body)", fontSize: "20px", lineHeight: 1.5, margin: 0, opacity: 0.8, whiteSpace: "pre-line" }}>
+                            {contactSettings?.location || "Melbourne, VIC\nAustralia"}
                         </p>
                     </motion.div>
 
@@ -226,7 +231,7 @@ export default function Contact() {
                         </div>
                         <h4 style={{ fontFamily: "var(--font-subheader)", fontSize: "24px", fontWeight: 700, margin: 0 }}>Write to Us</h4>
                         <p style={{ fontFamily: "var(--font-body)", fontSize: "20px", lineHeight: 1.5, margin: 0, opacity: 0.8 }}>
-                            hello@neversmall.studio
+                            {contactSettings?.email || "hello@neversmall.studio"}
                         </p>
                     </motion.div>
 

@@ -12,7 +12,8 @@ interface ServiceItemProps {
     href?: string;
 }
 
-export default function ServiceItem({ name, desc, image, href }: ServiceItemProps) {
+export default function ServiceItem({ name = "", desc = "", image = "", href }: ServiceItemProps) {
+    if (!name && !desc) return null; // Defensive check for completely empty data
     const router = useRouter();
     const containerRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
@@ -99,7 +100,7 @@ export default function ServiceItem({ name, desc, image, href }: ServiceItemProp
                         }}
                     >
                         <Image
-                            src={image}
+                            src={image || "/images/placeholder-service.jpg"}
                             alt={`${name}`}
                             fill
                             style={{ objectFit: "cover" }}

@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./cms.css";
 import SmoothScroll from "./components/SmoothScroll";
 import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop";
 import ConditionalFooter from "./components/ConditionalFooter";
+import CMSProvider from "./components/cms/CMSProvider";
+import CMSPinAuth from "./components/cms/CMSPinAuth";
+import CMSPanel from "./components/cms/CMSPanel";
 
 export const metadata: Metadata = {
   title: "Neversmall Studios — Creative Agency",
@@ -18,13 +22,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <SmoothScroll>
-          <Navbar />
-          {children}
-          <ScrollToTop />
-          <ConditionalFooter />
-        </SmoothScroll>
+      <body suppressHydrationWarning>
+        <CMSProvider>
+          <SmoothScroll>
+            <Navbar />
+            {children}
+            <ScrollToTop />
+            <ConditionalFooter />
+          </SmoothScroll>
+          <CMSPinAuth />
+          <CMSPanel />
+        </CMSProvider>
       </body>
     </html>
   );

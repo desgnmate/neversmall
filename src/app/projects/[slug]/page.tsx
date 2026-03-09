@@ -1,3 +1,4 @@
+import { fetchProjectBySlug } from "../../lib/supabase";
 import { PROJECTS } from "../../data/projects";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -12,7 +13,14 @@ interface ProjectPageProps {
 
 export default async function ProjectDetail({ params }: ProjectPageProps) {
     const { slug } = await params;
-    const project = PROJECTS.find((p) => p.slug === slug);
+
+    // First try CMS data
+    let project = await fetchProjectBySlug(slug);
+
+    // Fallback to static data if not in CMS yet
+    if (!project) {
+        project = PROJECTS.find((p) => p.slug === slug) as any;
+    }
 
     if (!project) {
         notFound();

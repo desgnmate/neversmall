@@ -89,6 +89,19 @@ body {
   overflow-x: hidden;
 }
 
+/* Prevent layout shift when scrollbar disappears by keeping space reserved */
+html {
+  scrollbar-gutter: stable;
+}
+
+.cms-lock {
+  overflow: hidden !important;
+}
+
+.cms-lock body {
+  overflow: hidden !important;
+}
+
 body {
   color: var(--color-black);
   background-color: var(--color-white);

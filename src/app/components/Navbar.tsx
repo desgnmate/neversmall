@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import AnimatedLink from "./AnimatedLink";
+import { useCMS } from "./cms/CMSProvider";
 
 const SERVICES_ITEMS = [
     { label: "VIDEOGRAPHY", href: "/services/videography", desc: "High-impact video production for brands, campaigns, and short-form content.", image: "/images/videography.jpg" },
@@ -83,6 +84,11 @@ export default function Navbar() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [activeService, setActiveService] = useState(0);
+
+    // CMS state
+    const { openPinModal } = useCMS();
+
+
 
     const toggle = useCallback(() => {
         setIsOpen((prev) => !prev);

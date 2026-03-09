@@ -29,9 +29,20 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
         requestAnimationFrame(raf);
 
+        const handleScrollLock = (e: any) => {
+            if (e.detail?.lock) {
+                lenis.stop();
+            } else {
+                lenis.start();
+            }
+        };
+
+        window.addEventListener('cms:scroll-lock' as any, handleScrollLock);
+
         return () => {
             lenis.destroy();
             lenisRef.current = null;
+            window.removeEventListener('cms:scroll-lock' as any, handleScrollLock);
         };
     }, []);
 
@@ -121,8 +132,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
                     }
                 }, 300);
                 return () => clearTimeout(timer);
-            } else {
-                lenisRef.current.scrollTo(0, { immediate: true });
             }
         }
     }, [pathname]);

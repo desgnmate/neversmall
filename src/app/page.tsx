@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import ServiceItem from "./components/ServiceItem";
 import Testimonials from "./components/Testimonials";
@@ -15,15 +16,16 @@ const MARQUEE_WORDS = [
 ];
 
 const SERVICES = [
-  { name: "VIDEOGRAPHY", desc: "High-impact video production for brands, campaigns, events, and short-form content.", image: "/images/videography.jpg", href: "/services/videography" },
-  { name: "PHOTOGRAPHY", desc: "Clean, professional imagery for products, campaigns, lifestyle, and brand storytelling.", image: "/images/photography-service.jpg", href: "/services/photography" },
-  { name: "SOCIAL MANAGEMENT", desc: "Strategic content planning, publishing, and growth management across social platforms.", image: "/images/social.jpg", href: "/services/social-management" },
-  { name: "META ADS", desc: "Targeted ad campaigns focused on reach, engagement, and measurable performance.", image: "/images/ads.jpg", href: "/services/meta-ads" }
+  { name: "VIDEOGRAPHY", description: "High-impact video production for brands, campaigns, events, and short-form content.", image: "/images/videography.jpg", href: "/services/videography" },
+  { name: "PHOTOGRAPHY", description: "Clean, professional imagery for products, campaigns, lifestyle, and brand storytelling.", image: "/images/photography-service.jpg", href: "/services/photography" },
+  { name: "SOCIAL MANAGEMENT", description: "Strategic content planning, publishing, and growth management across social platforms.", image: "/images/social.jpg", href: "/services/social-management" },
+  { name: "META ADS", description: "Targeted ad campaigns focused on reach, engagement, and measurable performance.", image: "/images/ads.jpg", href: "/services/meta-ads" }
 ];
 
 const NAV_LINKS = ["ABOUT", "PROJECTS", "SERVICES", "TESTIMONIALS"];
 
-import { PROJECTS } from "./data/projects";
+import { useCMS } from "./components/cms/CMSProvider";
+import { PROJECTS as BACKUP_PROJECTS } from "./data/projects";
 
 // Animation Variants
 const fadeInUp = {
@@ -48,6 +50,35 @@ const staggerContainer = {
 
 
 export default function Home() {
+  const { projects: cmsProjects, services: cmsServices, contactSettings, isLoading } = useCMS();
+  const [mounted, setMounted] = useState(false);
+  const [displayServices, setDisplayServices] = useState<any[]>(SERVICES);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Smart merge logic moved to useEffect for stability
+  useEffect(() => {
+    if (!mounted) return;
+
+    // Use CMS data exclusively if it exists and is populated
+    if (cmsServices && cmsServices.length > 0) {
+      const sorted = [...cmsServices].sort((a, b) => {
+        const orderA = (a as any).sort_order ?? 999;
+        const orderB = (b as any).sort_order ?? 999;
+        return orderA - orderB;
+      });
+
+      setDisplayServices(sorted);
+    } else {
+      // Basic fallback if CMS data completely fails or before initial seed
+      setDisplayServices(SERVICES);
+    }
+  }, [cmsServices, mounted]);
+
+  const displayProjects = cmsProjects.length > 0 ? cmsProjects : BACKUP_PROJECTS;
+
   // Duplicate the marquee items 4× so the animation loops seamlessly
   const marqueeItems = [...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS, ...MARQUEE_WORDS];
 
@@ -198,7 +229,7 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
           variants={fadeInUp}
         >
-          <ProjectGallery projects={PROJECTS} />
+          <ProjectGallery projects={displayProjects} />
         </motion.div>
 
         <motion.div
@@ -218,7 +249,7 @@ export default function Home() {
           className="services__header"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={fadeInUp}
         >
           <h2 className="services__headline">
@@ -230,19 +261,27 @@ export default function Home() {
           </p>
         </motion.div>
 
-        <motion.div
-          className="services__list"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          variants={staggerContainer}
-        >
-          {SERVICES.map((srv) => (
-            <motion.div key={srv.name} variants={fadeInUp}>
-              <ServiceItem name={srv.name} desc={srv.desc} image={srv.image} href={srv.href} />
-            </motion.div>
-          ))}
-        </motion.div>
+        <div className="services__list">
+          {displayServices.filter(Boolean).map((srv: any, idx: number) => {
+            const dynamicHref = srv.slug ? `/services/${srv.slug}` : srv.href;
+            return (
+              <motion.div
+                key={srv.id || srv.name || `srv-${idx}`}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.1, margin: "100px" }}
+                variants={fadeInUp}
+              >
+                <ServiceItem
+                  name={srv.name}
+                  desc={srv.description || srv.desc}
+                  image={srv.image}
+                  href={dynamicHref}
+                />
+              </motion.div>
+            );
+          })}
+        </div>
 
         <motion.div
           className="services__footer"

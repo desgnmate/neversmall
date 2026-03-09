@@ -1,9 +1,11 @@
 "use client";
 
-import { PROJECTS } from "../data/projects";
+import { PROJECTS, type Project as StaticProject } from "../data/projects";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimatedLink from "../components/AnimatedLink";
+import { useCMS } from "../components/cms/CMSProvider";
+import { type Project } from "../lib/supabase";
 
 const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -26,6 +28,24 @@ const staggerContainer = {
 };
 
 export default function Projects() {
+    const { projects: cmsProjects, isLoading } = useCMS();
+
+    // Smart merge: Use CMS projects and fill in missing ones from static data
+    // to ensure the page doesn't look empty during CMS setup.
+    const displayProjects = cmsProjects.length > 0
+        ? [
+            ...cmsProjects,
+            ...PROJECTS.filter(p => !cmsProjects.some(cp => cp.slug === p.slug || cp.title.toUpperCase() === p.title.toUpperCase()))
+        ]
+        : PROJECTS;
+
+    // Sort by sort_order if available, or just keep as merged
+    const sortedProjects = [...displayProjects].sort((a, b) => {
+        const orderA = (a as any).sort_order ?? 999;
+        const orderB = (b as any).sort_order ?? 999;
+        return orderA - orderB;
+    });
+
     return (
         <main className="page-wrapper projects-page">
             {/* Header Section */}
@@ -63,8 +83,7 @@ export default function Projects() {
                     viewport={{ once: true, margin: "-100px" }}
                     variants={staggerContainer}
                 >
-                    {PROJECTS.map((project, idx) => {
-                        // Determine offsets and aspect ratios for a dynamic layout
+                    {sortedProjects.map((project: any, idx: number) => {
                         const isEven = idx % 2 === 0;
                         const isLargeOffset = idx % 4 === 1;
                         const isSmallOffset = idx % 4 === 2;
@@ -79,7 +98,7 @@ export default function Projects() {
 
                         return (
                             <motion.div
-                                key={project.slug}
+                                key={project.id || project.slug || project.title}
                                 className={`projects-page__item ${offsetClass}`}
                                 variants={fadeInUp}
                             >
