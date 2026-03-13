@@ -61,54 +61,6 @@ export default function ServiceItem({ name = "", desc = "", image = "", href }: 
                 </h3>
                 <p className="service-item__desc">{desc}</p>
             </div>
-
-            <AnimatePresence>
-                {isHovered && (
-                    <motion.div
-                        className="service-item__image"
-                        aria-hidden="true"
-                        initial={{
-                            opacity: 0,
-                            scale: 0.8,
-                            rotate: 0,
-                            x: mousePos.x,
-                            y: mousePos.y
-                        }}
-                        animate={{
-                            opacity: 1,
-                            scale: 1,
-                            rotate: -4,
-                            x: mousePos.x,
-                            y: mousePos.y
-                        }}
-                        exit={{ opacity: 0, scale: 0.8, rotate: 0 }}
-                        // Using initial={false} on the x/y part isn't direct here, 
-                        // but setting state before mount achieves the same result.
-                        style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            zIndex: 100,
-                            pointerEvents: "none",
-                        }}
-                        transition={{
-                            x: { type: "spring", damping: 25, stiffness: 150 },
-                            y: { type: "spring", damping: 25, stiffness: 150 },
-                            opacity: { duration: 0.2 },
-                            scale: { duration: 0.3, ease: "circOut" },
-                            rotate: { duration: 0.4, ease: "backOut" }
-                        }}
-                    >
-                        <Image
-                            src={image || "/images/placeholder-service.jpg"}
-                            alt={`${name}`}
-                            fill
-                            style={{ objectFit: "cover" }}
-                            sizes="200px"
-                        />
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </motion.div>
     );
 }

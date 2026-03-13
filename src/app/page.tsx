@@ -7,6 +7,8 @@ import ServiceItem from "./components/ServiceItem";
 import Testimonials from "./components/Testimonials";
 import ProjectGallery from "./components/ProjectGallery";
 import AnimatedLink from "./components/AnimatedLink";
+import BrandsSection from "./components/BrandsSection";
+import TeamSection from "./components/TeamSection";
 
 const MARQUEE_WORDS = [
   "VIDEOGRAPHY",
@@ -104,7 +106,7 @@ export default function Home() {
           variants={staggerContainer}
         >
           <motion.span className="hero__tagline" variants={fadeInUp}>
-            NEVERSMALL STUDIOS • CREATIVE AGENCY
+            NEVERSMALL STUDIOS • SOCIAL-FIRST CREATIVE AGENCY
           </motion.span>
 
           <nav className="hero__nav" aria-label="Section navigation">
@@ -177,8 +179,8 @@ export default function Home() {
         >
           <motion.div className="about__image-container" variants={fadeInUp}>
             <Image
-              src="/images/about_image.jpg"
-              alt="Neversmall Studio team holding CDs and smiling"
+              src="/images/about_section_team.jpg"
+              alt="Neversmall Studio creative team portrait"
               width={800}
               height={600}
               style={{ width: "100%", height: "auto", objectFit: "cover" }}
@@ -206,6 +208,9 @@ export default function Home() {
           </motion.div>
         </motion.div>
       </section>
+
+      {/* ── Team Section ── */}
+      {/* Moved below Testimonials */}
 
       {/* ── Projects Section ── */}
       <section id="projects" className="projects" aria-label="Our projects">
@@ -298,6 +303,9 @@ export default function Home() {
       <section id="testimonials">
         <Testimonials />
       </section>
+
+      {/* ── Team Section (Moved) ── */}
+      <TeamSection />
 
       {/* ── CTA Section ── */}
       <section id="cta" className="cta" aria-label="Call to action">

@@ -7,6 +7,13 @@ html.hide-main-scrollbar {
     scrollbar-width: none !important;
 }
 
+/* CSS selection highlighting */
+.cms-panel ::selection,
+.cms-panel *::selection {
+    background-color: #011EE6 !important;
+    color: #fff !important;
+}
+
 html.hide-main-scrollbar::-webkit-scrollbar {
     display: none !important;
 }

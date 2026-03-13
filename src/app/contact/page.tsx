@@ -174,7 +174,7 @@ export default function Contact() {
                         variants={fadeInUp}
                         style={{ position: "relative", width: "100%", aspectRatio: "3.2/2", overflow: "hidden" }}>
                         <Image
-                            src="/images/about_image.jpg" // Using an existing project image
+                            src="/images/about_section_team.jpg" // Using the updated team portrait
                             alt="Contact Us Journey"
                             fill
                             style={{ objectFit: "cover" }}

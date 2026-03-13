@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimatedLink from "../components/AnimatedLink";
+import BrandsSection from "../components/BrandsSection";
+import TeamSection from "../components/TeamSection";
 
 const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -28,65 +30,64 @@ export default function About() {
     return (
         <main className="page-wrapper about-page" style={{ backgroundColor: "#F6F6F6" }}>
             {/* ── Hero Section ── */}
+            {/* ── Recreated Hero Section ── */}
             <section className="about-page__hero">
-                <motion.div
-                    className="about-page__hero-grid"
-                    initial="hidden"
-                    animate="visible"
-                    variants={staggerContainer}
-                >
-                    {/* Left content: Large text + Signature */}
-                    <div style={{ position: "relative", zIndex: 2 }}>
-                        <motion.h1
-                            variants={fadeInUp}
-                            style={{
-                                fontFamily: "var(--font-header)",
-                                fontSize: "clamp(48px, 8vw, 90px)",
-                                lineHeight: 1,
-                                letterSpacing: "-0.04em",
-                                textTransform: "uppercase",
-                                color: "var(--color-black)",
-                                marginBottom: "40px",
-                                maxWidth: "800px"
-                            }}>
-                            NEVERSMALL STUDIO — <br />
-                            WHERE IDEAS <br />
-                            TRULY SCALE.
-                        </motion.h1>
-
-                        {/* Styled "Signature" placeholder */}
-                        <motion.div
-                            variants={fadeInUp}
-                            style={{
-                                marginTop: "20px",
-                            }}>
-                            <span style={{
-                                fontFamily: "var(--font-subheader)",
-                                fontSize: "clamp(24px, 3vw, 42px)",
-                                color: "var(--color-black)",
-                                opacity: 0.8,
-                                display: "block",
-                                transform: "rotate(-2deg)",
-                                marginLeft: "20px"
-                            }}>
-                                ~ Neversmall Studio
-                            </span>
-                        </motion.div>
-                    </div>
-
-                    {/* Right content: Portrait Image */}
-                    <motion.div
-                        variants={fadeInUp}
-                        style={{ position: "relative", width: "100%", aspectRatio: "4/5", overflow: "hidden" }}>
+                <div className="about-page__hero-split">
+                    <div className="about-page__hero-left">
                         <Image
-                            src="/images/about_image.jpg" // Using existing about image as portrait
-                            alt="The creative face behind Neversmall Studios"
+                            src="/images/about/about-hero-bg.jpg"
+                            alt="Neversmall Team"
                             fill
                             style={{ objectFit: "cover" }}
                             priority
                         />
-                    </motion.div>
-                </motion.div>
+                    </div>
+                    <div className="about-page__hero-right">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={staggerContainer}
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                height: "100%",
+                                width: "100%"
+                            }}
+                        >
+                            <motion.h1
+                                variants={fadeInUp}
+                                className="about-page__hero-title"
+                                style={{ margin: 0 }}
+                            >
+                                ABOUT US
+                            </motion.h1>
+
+                            <motion.div
+                                variants={fadeInUp}
+                                className="about-page__hero-logo"
+                                style={{ alignSelf: "center" }}
+                            >
+                                <Image
+                                    src="/images/about/about-hero-logo.png"
+                                    alt="Neversmall Icon"
+                                    width={400}
+                                    height={400}
+                                    style={{ width: "100%", height: "auto" }}
+                                />
+                            </motion.div>
+
+                            <motion.p
+                                variants={fadeInUp}
+                                className="about-page__hero-paragraph"
+                                style={{ margin: 0 }}
+                            >
+                                NEVERSMALL STUDIOS IS A CREATIVE PRODUCTION + SOCIAL STRATEGY STUDIO THAT BLENDS HIGH-END, EDITORIAL VISUALS WITH PLATFORM-NATIVE STORYTELLING TO HELP BRANDS GROW. UTILISING THE DIVERSE SKILL SETS OF OUR SPECIALISED TEAM MEMBERS. WE TURN BRAND IDENTITY INTO SHAREABLE CONTENT AND SCALABLE MARKETING.
+                            </motion.p>
+                        </motion.div>
+                    </div>
+                </div>
             </section>
 
             {/* ── Info & Testimonial Section ── */}
@@ -150,7 +151,8 @@ export default function About() {
                             fontSize: "clamp(16px, 1.6vw, 20px)",
                             lineHeight: 1.6,
                             color: "var(--color-black)",
-                            position: "relative"
+                            position: "relative",
+                            textAlign: "justify"
                         }}>
                             <span style={{
                                 float: "left",
@@ -169,7 +171,8 @@ export default function About() {
                             fontSize: "clamp(16px, 1.6vw, 20px)",
                             lineHeight: 1.6,
                             color: "var(--color-black)",
-                            opacity: 0.8
+                            opacity: 0.8,
+                            textAlign: "justify"
                         }}>
                             We prioritize communication and quality above all else. From the first discovery session to final delivery, your vision is our blueprint. Our creatives aren&apos;t just here to execute tasks; they&apos;re professionals who prioritize your brand&apos;s story and impact on the global stage.
                         </p>
@@ -207,9 +210,33 @@ export default function About() {
                             </div>
                         </div>
                     </motion.div>
-
                 </motion.div>
             </section>
+
+
+            {/* ── Brands Section ── */}
+            <section className="about-page__brands" style={{ padding: "80px 0" }}>
+                {/* Visual - Brands */}
+                <motion.div
+                    className="about-page__brands-visual"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    variants={fadeInUp}
+                    style={{ position: "relative", width: "100%", aspectRatio: "16/9" }}
+                >
+                    <Image
+                        src="/images/about/brands-visual.jpg"
+                        alt="Brands We've Worked With"
+                        fill
+                        style={{ objectFit: "contain" }}
+                    />
+                </motion.div>
+            </section>
+
+
+            {/* ── Team Section ── */}
+            <TeamSection />
 
             {/* CTA section structured to match others */}
             <section className="cta" aria-label="Call to action">
