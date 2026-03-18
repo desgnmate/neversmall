@@ -61,6 +61,25 @@ export default function ServiceItem({ name = "", desc = "", image = "", href }: 
                 </h3>
                 <p className="service-item__desc">{desc}</p>
             </div>
+
+            <AnimatePresence>
+                {isHovered && image && (
+                    <motion.div
+                        className="service-item__image"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{
+                            opacity: 1,
+                            scale: 1,
+                            x: mousePos.x,
+                            y: mousePos.y
+                        }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ type: "spring", stiffness: 150, damping: 15 }}
+                    >
+                        <Image src={image} alt={name} width={200} height={250} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 }

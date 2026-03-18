@@ -4,6 +4,7 @@ import "./cms.css";
 import SmoothScroll from "./components/SmoothScroll";
 import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop";
+import PersistentContact from "./components/PersistentContact";
 import ConditionalFooter from "./components/ConditionalFooter";
 import CMSProvider from "./components/cms/CMSProvider";
 import CMSPinAuth from "./components/cms/CMSPinAuth";
@@ -28,6 +29,7 @@ export default function RootLayout({
             <Navbar />
             {children}
             <ScrollToTop />
+            <PersistentContact />
             <ConditionalFooter />
           </SmoothScroll>
           <CMSPinAuth />

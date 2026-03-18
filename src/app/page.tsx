@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import ServiceItem from "./components/ServiceItem";
-import Testimonials from "./components/Testimonials";
 import ProjectGallery from "./components/ProjectGallery";
 import AnimatedLink from "./components/AnimatedLink";
 import BrandsSection from "./components/BrandsSection";
@@ -18,13 +18,13 @@ const MARQUEE_WORDS = [
 ];
 
 const SERVICES = [
-  { name: "VIDEOGRAPHY", description: "High-impact video production for brands, campaigns, events, and short-form content.", image: "/images/videography.jpg", href: "/services/videography" },
-  { name: "PHOTOGRAPHY", description: "Clean, professional imagery for products, campaigns, lifestyle, and brand storytelling.", image: "/images/photography-service.jpg", href: "/services/photography" },
-  { name: "SOCIAL MANAGEMENT", description: "Strategic content planning, publishing, and growth management across social platforms.", image: "/images/social.jpg", href: "/services/social-management" },
-  { name: "META ADS", description: "Targeted ad campaigns focused on reach, engagement, and measurable performance.", image: "/images/ads.jpg", href: "/services/meta-ads" }
+  { name: "VIDEOGRAPHY", description: "High-impact video production for brands, campaigns, events, and short-form content.", video: "/videos/videography.mp4", href: "/services/videography" },
+  { name: "PHOTOGRAPHY", description: "Clean, professional imagery for products, campaigns, lifestyle, and brand storytelling.", video: "/videos/photography.mp4", href: "/services/photography" },
+  { name: "SOCIAL MANAGEMENT", description: "Strategic content planning, publishing, and growth management across social platforms.", video: "/videos/social-management.mp4", href: "/services/social-management" },
+  { name: "META ADS", description: "Targeted ad campaigns focused on reach, engagement, and measurable performance.", video: "/videos/meta-ads.mp4", href: "/services/meta-ads" }
 ];
 
-const NAV_LINKS = ["ABOUT", "PROJECTS", "SERVICES", "TESTIMONIALS"];
+const NAV_LINKS = ["ABOUT", "PROJECTS", "SERVICES"];
 
 import { useCMS } from "./components/cms/CMSProvider";
 import { PROJECTS as BACKUP_PROJECTS } from "./data/projects";
@@ -86,54 +86,70 @@ export default function Home() {
 
   return (
     <main className="page-wrapper home-wrapper">
-      {/* ── Hero ── */}
       <section className="hero" aria-label="Hero section">
-        <motion.h1
-          className="hero__headline"
-          initial={{ opacity: 0, y: 40 }}
+        <div className="hero__top-bar">
+        </div>
+
+        <motion.div
+          className="hero__banner"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay: 0.5 }}
+          transition={{ duration: 0.8 }}
         >
-          DON'T SELL
-          <br />
-          YOURSELF SHORT.
-        </motion.h1>
+          {/* 1. Underlying blue background layer (via CSS) */}
 
-        <motion.div
-          className="hero__meta"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-        >
-          <motion.span className="hero__tagline" variants={fadeInUp}>
-            NEVERSMALL STUDIOS • SOCIAL-FIRST CREATIVE AGENCY
-          </motion.span>
+          {/* 2. Repeating blueprint grid pattern overlay */}
+          <div className="hero__pattern-overlay" />
 
-          <nav className="hero__nav" aria-label="Section navigation">
-            {NAV_LINKS.map((link, idx) => (
-              <motion.span key={link} className="hero__nav-link-wrapper" style={{ display: "flex", alignItems: "center" }} variants={fadeInUp}>
-                {idx > 0 && <span className="hero__nav-dot" aria-hidden="true" />}
-                <AnimatedLink href={`#${link.toLowerCase()}`} className="hero__nav-link" text={link} />
-              </motion.span>
-            ))}
-          </nav>
-        </motion.div>
+          {/* 3. The masked logo image on the right */}
+          <div className="hero__masked-logo-wrapper">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, rotate: 5 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay: 0.2 }}
+              className="hero__masked-logo"
+            >
+              <Image
+                src="/images/hero-masked-logo.png"
+                alt=""
+                fill
+                priority
+                style={{ objectFit: 'contain', objectPosition: 'right' }}
+              />
+            </motion.div>
+          </div>
 
-        <motion.div
-          className="hero__image-container"
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay: 0.2 }}
-        >
-          <Image
-            src="/images/herobg.jpg"
-            alt="Neversmall Studios creative event — aerial view of a vibrant crowd"
-            width={1920}
-            height={1080}
-            priority
-            sizes="100vw"
-            style={{ width: "100%", height: "auto" }}
-          />
+          <div className="hero__content">
+            <motion.h1
+              className="hero__headline"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay: 0.2 }}
+            >
+              DONT SELL
+              <br />
+              YOURSELF
+              <br />
+              SHORT.
+            </motion.h1>
+
+            <motion.p
+              className="hero__description"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              Were a team of creatives, storytellers, and marketers delivering full-service.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <a href="/contact" className="hero__button">START A PROJECT</a>
+            </motion.div>
+          </div>
         </motion.div>
       </section>
 
@@ -142,6 +158,7 @@ export default function Home() {
         <div className="marquee__track">
           {marqueeItems.map((word, idx) => (
             <div className="marquee__item" key={`${word}-${idx}`}>
+              <span className="marquee__text">{word}</span>
               <Image
                 className="marquee__icon"
                 src="/images/marquee-icon.png"
@@ -150,7 +167,6 @@ export default function Home() {
                 height={28}
                 aria-hidden="true"
               />
-              <span className="marquee__text">{word}</span>
             </div>
           ))}
         </div>
@@ -165,9 +181,7 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
           variants={fadeInUp}
         >
-          BUILDING NEXT-LEVEL<br />
-          BRANDS THAT REFUSE<br />
-          TO STAY SMALL.
+          About Us <span className="about__arrow">↘</span>
         </motion.h2>
 
         <motion.div
@@ -209,8 +223,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ── Team Section ── */}
-      {/* Moved below Testimonials */}
 
       {/* ── Projects Section ── */}
       <section id="projects" className="projects" aria-label="Our projects">
@@ -221,11 +233,14 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
           variants={fadeInUp}
         >
-          <h2 className="projects__title">PROJECTS</h2>
-          <p className="projects__desc">
-            A selection of campaigns, content, and creative work produced for brands across video, photography, and digital marketing.
-          </p>
-          <span className="projects__tag">(featured work)</span>
+          <h2 className="projects__title">
+            G*llery <span className="projects__arrow">↘</span>
+          </h2>
+          <div className="projects__header-right">
+            <p className="projects__desc">
+              A selection of campaigns and creative work produced for brands across video, photography, and digital marketing.
+            </p>
+          </div>
         </motion.div>
 
         <motion.div
@@ -250,61 +265,70 @@ export default function Home() {
 
       {/* ── Services Section ── */}
       <section id="services" className="services" aria-label="Our services">
-        <motion.div
-          className="services__header"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={fadeInUp}
-        >
-          <h2 className="services__headline">
-            FULL-SERVICE<br />
-            CREATIVE SUPPORT.
-          </h2>
-          <p className="services__desc">
-            Strategy, production, and performance marketing - all handled in one place.
-          </p>
-        </motion.div>
+        <div className="services__pattern-overlay" />
 
-        <div className="services__list">
-          {displayServices.filter(Boolean).map((srv: any, idx: number) => {
-            const dynamicHref = srv.slug ? `/services/${srv.slug}` : srv.href;
-            return (
-              <motion.div
-                key={srv.id || srv.name || `srv-${idx}`}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.1, margin: "100px" }}
-                variants={fadeInUp}
-              >
-                <ServiceItem
-                  name={srv.name}
-                  desc={srv.description || srv.desc}
-                  image={srv.image}
-                  href={dynamicHref}
-                />
-              </motion.div>
-            );
-          })}
+        <div className="services__container">
+          <motion.div
+            className="services__header"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={fadeInUp}
+          >
+            <h2 className="services__headline">
+              Services <span className="services__arrow">↘</span>
+            </h2>
+            <div className="services__header-right">
+              <p className="services__desc">
+                Strategy, production, and performance marketing - all handled in one place.
+              </p>
+            </div>
+          </motion.div>
+
+          <div className="services__grid">
+            {displayServices.filter(Boolean).map((srv: any, idx: number) => {
+              const dynamicHref = srv.slug ? `/services/${srv.slug}` : srv.href;
+              return (
+                <motion.div
+                  key={srv.id || srv.name || `srv-${idx}`}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.1, margin: "100px" }}
+                  variants={fadeInUp}
+                >
+                  <Link href={dynamicHref} className="service-card">
+                    <div className="service-card__inner">
+                      {/* Front Face */}
+                      <div className="service-card__front">
+                        <video
+                          src={srv.video || `/videos/${srv.name.toLowerCase().replace(/\s+/g, '-')}.mp4`}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="service-card__video"
+                        />
+                        <div className="service-card__color-boost" />
+                        <div className="service-card__overlay" />
+                        <h3 className="service-card__title">
+                          {srv.name} <span className="service-card__arrow">↗</span>
+                        </h3>
+                      </div>
+
+                      {/* Back Face */}
+                      <div className="service-card__back">
+                        <span className="service-card__back-title">{srv.name}</span>
+                        <p className="service-card__back-desc">{srv.description || srv.desc}</p>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-
-        <motion.div
-          className="services__footer"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeInUp}
-        >
-          <AnimatedLink href="/contact" className="services__button" text="START A PROJECT" />
-        </motion.div>
       </section>
 
-      {/* ── Testimonials Section ── */}
-      <section id="testimonials">
-        <Testimonials />
-      </section>
-
-      {/* ── Team Section (Moved) ── */}
       <TeamSection />
 
       {/* ── CTA Section ── */}
@@ -330,7 +354,7 @@ export default function Home() {
         >
           <motion.p className="cta__subhead" variants={fadeInUp}>Don&apos;t sell yourself short.</motion.p>
           <motion.div variants={fadeInUp}>
-            <AnimatedLink href="/contact" className="cta__button" text="START A PROJECT" />
+            <Link href="/contact" className="cta__button">START A PROJECT</Link>
           </motion.div>
         </motion.div>
       </section>

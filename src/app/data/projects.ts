@@ -71,5 +71,21 @@ export const PROJECTS: Project[] = [
         image: "/images/project-8.png",
         slug: "main-stage",
         gallery: ["/images/project-8.png", "/images/project-2.png", "/images/project-6.png"]
+    },
+    {
+        title: "URBAN RHYTHM",
+        category: "Street Photography",
+        description: "Capturing the pulse of the city through candid moments and architectural geometry.",
+        image: "/images/project-4.png", /* Reuse some images for now to fill space */
+        slug: "urban-rhythm",
+        gallery: ["/images/project-4.png", "/images/project-5.png"]
+    },
+    {
+        title: "NEON DREAMS",
+        category: "Music Video",
+        description: "A high-energy, visually experimental music video utilizing practical neon lighting and fast cuts.",
+        image: "/images/project-3.png",
+        slug: "neon-dreams",
+        gallery: ["/images/project-3.png", "/images/project-7.png"]
     }
 ];

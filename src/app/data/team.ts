@@ -34,12 +34,5 @@ export const TEAM: TeamMember[] = [
         role: "Head of Photography",
         email: "tristen@neversmall.com.au",
         image: "/images/team/TRISTEN.png"
-    },
-    {
-        id: "5",
-        name: "XUELI",
-        role: "Social Media Manager",
-        email: "xueli@neversmall.com.au",
-        image: "/images/team/XUELI.png"
     }
 ];
