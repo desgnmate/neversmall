@@ -98,11 +98,8 @@ export default function Home() {
         >
           {/* 1. Underlying blue background layer (via CSS) */}
 
-          {/* 2. Repeating blueprint grid pattern overlay */}
-          <div className="hero__pattern-overlay" />
-
-          {/* 3. The masked logo image on the right */}
-          <div className="hero__masked-logo-wrapper">
+          {/* 2. The masked logo image (Desktop) */}
+          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--desktop">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, rotate: 5 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -115,6 +112,24 @@ export default function Home() {
                 fill
                 priority
                 style={{ objectFit: 'contain', objectPosition: 'right' }}
+              />
+            </motion.div>
+          </div>
+
+          {/* 2b. The masked logo image (Mobile) */}
+          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--mobile">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, delay: 0.2 }}
+              className="hero__masked-logo"
+            >
+              <Image
+                src="/images/herobglogomobile.png"
+                alt=""
+                fill
+                priority
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
               />
             </motion.div>
           </div>
