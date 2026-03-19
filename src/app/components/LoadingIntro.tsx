@@ -125,7 +125,7 @@ export default function LoadingIntro() {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            gap: '24px',
+                            gap: 'min(24px, 3vw)',
                             width: 'auto'
                         }}>
                             {/* ICON */}
@@ -135,8 +135,8 @@ export default function LoadingIntro() {
                                 transition={{ duration: 0.6, ease: "easeOut" }}
                                 style={{
                                     position: 'relative',
-                                    width: 'min(100px, 20vw)',
-                                    height: 'min(100px, 20vw)',
+                                    width: 'min(100px, 12vw)',
+                                    height: 'min(100px, 12vw)',
                                     filter: 'brightness(0) invert(1)'
                                 }}
                             >
@@ -146,7 +146,7 @@ export default function LoadingIntro() {
                             {/* TEXT */}
                             <motion.div
                                 initial={{ width: 0, opacity: 0, x: -10 }}
-                                animate={{ width: "min(300px, 50vw)", opacity: 1, x: 0 }}
+                                animate={{ width: "min(300px, 55vw)", opacity: 1, x: 0 }}
                                 transition={{
                                     width: { duration: 0.8, delay: 0.4, ease: [0.77, 0, 0.175, 1] },
                                     opacity: { duration: 0.4, delay: 0.4 },
@@ -160,7 +160,7 @@ export default function LoadingIntro() {
                                     whiteSpace: 'nowrap'
                                 }}
                             >
-                                <div style={{ position: 'relative', width: '300px', height: '100%' }}>
+                                <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                                     <Image src="/images/logo/logo-text.png" alt="Logo Text" fill priority style={{ objectFit: 'contain', objectPosition: 'left' }} />
                                 </div>
                             </motion.div>

@@ -207,8 +207,8 @@ button {
 }
 
 .navbar__logo img {
-  height: 32px;
-  width: auto;
+  height: 54px !important;
+  width: auto !important;
 }
 
 .navbar__spacer {
