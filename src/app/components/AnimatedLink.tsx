@@ -8,14 +8,16 @@ interface AnimatedLinkProps {
     text: string;
     className?: string;
     onClick?: () => void;
+    style?: React.CSSProperties;
 }
 
-export default function AnimatedLink({ href, text, className, onClick }: AnimatedLinkProps) {
+export default function AnimatedLink({ href, text, className, onClick, style }: AnimatedLinkProps) {
     return (
         <Link
             href={href}
             className={`animated-link ${className ?? ''}`}
             onClick={onClick}
+            style={style}
         >
             <span className="sr-only">{text}</span>
             <span className="animated-link__inner" aria-hidden="true">

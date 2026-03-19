@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import AnimatedLink from "./AnimatedLink";
-import { useCMS } from "./cms/CMSProvider";
+import Link from "next/link";
 
 const SERVICES_ITEMS = [
     { label: "VIDEOGRAPHY", href: "/services/videography", desc: "High-impact video production for brands, campaigns, and short-form content.", image: "/images/videography.jpg" },
@@ -18,11 +17,34 @@ export default function Navbar() {
     const pathname = usePathname();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     // Close menu on navigation 
     useEffect(() => {
         setIsMenuOpen(false);
     }, [pathname]);
+
+    // Scroll listener for detail pages transparency transition
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 100) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        // Initial check
+        handleScroll();
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const isDetailPage = pathname.includes('/projects/') || pathname.includes('/services/');
+
+    // Only apply transparent logic if on a detail page AND not scrolled down
+    const showTransparent = isDetailPage && !isScrolled;
 
     return (
         <>
@@ -30,21 +52,23 @@ export default function Navbar() {
                 className={`navbar__hamburger ${isMenuOpen ? 'active' : ''}`}
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                style={{ 
-                    position: 'fixed', 
-                    right: '20px', 
+                style={{
+                    position: 'fixed',
+                    right: '24px',
                     top: '25px',
-                    zIndex: 20000 
+                    zIndex: 20000
                 }}
             >
                 <div className="navbar__hamburger-box">
-                    <span className="navbar__hamburger-inner"></span>
+                    <span className="navbar__hamburger-inner" style={{
+                        backgroundColor: (showTransparent && !isMenuOpen) ? 'var(--color-white)' : 'var(--color-black)'
+                    }}></span>
                 </div>
             </button>
 
-            <nav className="navbar" role="navigation" aria-label="Main navigation">
+            <nav className={`navbar ${showTransparent ? 'navbar--transparent' : ''}`} role="navigation" aria-label="Main navigation">
                 <div className="navbar__logo-wrapper">
-                    <a href="/" className="navbar__logo" aria-label="Neversmall Studios home">
+                    <Link href="/" className="navbar__logo" aria-label="Neversmall Studios home">
                         <Image
                             src="/images/logo.png"
                             alt="Neversmall Studios logo"
@@ -52,23 +76,23 @@ export default function Navbar() {
                             height={36}
                             priority
                         />
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="navbar__spacer"></div>
 
                 <div className="navbar__actions">
-                    <a href="/#about" className="navbar__item navbar__item--no-border">ABOUT</a>
-                    <a href="/#projects" className="navbar__item navbar__item--no-border">PROJECTS</a>
+                    <Link href="/#about" className="navbar__item navbar__item--no-border">ABOUT</Link>
+                    <Link href="/#projects" className="navbar__item navbar__item--no-border">PROJECTS</Link>
 
                     <div
                         className="navbar__item-wrapper"
                         onMouseEnter={() => setIsDropdownOpen(true)}
                         onMouseLeave={() => setIsDropdownOpen(false)}
                     >
-                        <a href="/#services" className={`navbar__item navbar__item--no-border ${isDropdownOpen ? 'navbar__item--active' : ''}`}>
+                        <Link href="/#services" className={`navbar__item navbar__item--no-border ${isDropdownOpen ? 'navbar__item--active' : ''}`}>
                             SERVICES
-                        </a>
+                        </Link>
                         <AnimatePresence>
                             {isDropdownOpen && (
                                 <motion.div
@@ -81,14 +105,14 @@ export default function Navbar() {
                                 >
                                     <div className="navbar__dropdown-items">
                                         {SERVICES_ITEMS.map((item) => (
-                                            <a
+                                            <Link
                                                 key={item.label}
                                                 href={item.href}
                                                 className="navbar__dropdown-link"
                                                 onClick={() => setIsDropdownOpen(false)}
                                             >
                                                 {item.label}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </div>
                                 </motion.div>
@@ -96,8 +120,8 @@ export default function Navbar() {
                         </AnimatePresence>
                     </div>
 
-                    <a href="/contact" className="navbar__item navbar__item--cta">GET IN TOUCH</a>
-                    
+                    <Link href="/contact" className="navbar__item navbar__item--cta">GET IN TOUCH</Link>
+
                     <div className="navbar__end-cap"></div>
                 </div>
             </nav>
@@ -113,10 +137,10 @@ export default function Navbar() {
                     >
 
                         <div className="navbar__mobile-items">
-                            <a href="/#about" className="navbar__mobile-link" onClick={() => setIsMenuOpen(false)}>ABOUT</a>
-                            <a href="/#projects" className="navbar__mobile-link" onClick={() => setIsMenuOpen(false)}>PROJECTS</a>
-                            <a href="/#services" className="navbar__mobile-link" onClick={() => setIsMenuOpen(false)}>SERVICES</a>
-                            <a href="/contact" className="navbar__mobile-link navbar__mobile-link--cta" onClick={() => setIsMenuOpen(false)}>START A PROJECT</a>
+                            <Link href="/#about" className="navbar__mobile-link" onClick={() => setIsMenuOpen(false)}>ABOUT</Link>
+                            <Link href="/#projects" className="navbar__mobile-link" onClick={() => setIsMenuOpen(false)}>PROJECTS</Link>
+                            <Link href="/#services" className="navbar__mobile-link" onClick={() => setIsMenuOpen(false)}>SERVICES</Link>
+                            <Link href="/contact" className="navbar__mobile-link navbar__mobile-link--cta" onClick={() => setIsMenuOpen(false)}>START A PROJECT</Link>
                         </div>
                     </motion.div>
                 )}

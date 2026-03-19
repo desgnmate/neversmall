@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useParams, notFound } from "next/navigation";
 import { fetchServiceBySlug, type Service } from "../../lib/supabase";
+import Link from "next/link";
 import AnimatedLink from "../../components/AnimatedLink";
 import Footer from "../../components/Footer";
 
@@ -52,7 +53,7 @@ export default function DynamicServicePage() {
                 <div className="sp-hero__overlay" />
                 <div className="sp-hero__content">
                     <p className="sp-hero__breadcrumb">
-                        <a href="/">Home</a> / <a href="/#services">Services</a> / {service.name}
+                        <Link href="/">HOME</Link> / <Link href="/#services">SERVICES</Link> / {service.name}
                     </p>
                     <h1 className="sp-hero__title">
                         {service.page_headline ? service.page_headline.toUpperCase() : service.name.toUpperCase()}

@@ -9,6 +9,8 @@ import ConditionalFooter from "./components/ConditionalFooter";
 import CMSProvider from "./components/cms/CMSProvider";
 import CMSPinAuth from "./components/cms/CMSPinAuth";
 import CMSPanel from "./components/cms/CMSPanel";
+import LoadingIntro from "./components/LoadingIntro";
+import PageTransitionLoader from "./components/PageTransitionLoader";
 
 export const metadata: Metadata = {
   title: "Neversmall Studios — Creative Agency",
@@ -25,6 +27,8 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning>
         <CMSProvider>
+          <LoadingIntro />
+          <PageTransitionLoader />
           <SmoothScroll>
             <Navbar />
             {children}

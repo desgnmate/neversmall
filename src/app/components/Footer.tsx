@@ -82,8 +82,8 @@ export default function Footer() {
           <h4 className="footer__heading">GET IN TOUCH</h4>
 
           <div className="footer__contact-item">
-            <span className="footer__contact-label">Call</span>
-            <a href={`tel:${contactSettings?.phone || "0432 300 709"}`} className="footer__link-text">{contactSettings?.phone || "0432 300 709"}</a>
+            <span className="footer__contact-label">Meeting</span>
+            <a href="https://calendar.app.google.com/jQ5L1G21d6d8sY7i6" target="_blank" rel="noopener noreferrer" className="footer__link-text">Book a Call</a>
           </div>
 
           <div className="footer__contact-item">
@@ -110,8 +110,9 @@ export default function Footer() {
           />
         </div>
 
-        <div className="footer__bottom" style={{ backgroundColor: '#F8F8F8', position: 'relative', zIndex: 10 }}>
+        <div className="footer__bottom" style={{ backgroundColor: '#F8F8F8', position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
           <p className="footer__copyright">© 2026 Neversmall Studio. All rights reserved.</p>
+          <p className="footer__credit" style={{ fontSize: '12px', opacity: 0.6 }}>design by <a href="https://desgnmate.com" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>desgnmate.com</a></p>
         </div>
       </motion.div>
     </footer>

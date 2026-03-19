@@ -112,7 +112,7 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  /* overflow-x: hidden removed to ensure position: sticky works correctly */
 }
 
 /* Prevent layout shift when scrollbar disappears by keeping space reserved */
@@ -200,6 +200,10 @@ button {
   padding: 0 40px;
   border-right: none;
   /* Removed border as requested */
+}
+
+.navbar__logo {
+  transition: filter 0.3s ease;
 }
 
 .navbar__logo img {
@@ -317,6 +321,29 @@ button {
   background-color: #F8F8F8;
   color: var(--color-blue);
   padding-left: 30px;
+}
+
+/* Detail Page Navbar Overrides */
+.navbar--transparent {
+  background-color: transparent !important;
+  border-bottom: none !important;
+  transition: background-color 0.4s ease;
+}
+
+.navbar--transparent .navbar__item {
+  color: var(--color-white) !important;
+  transition: color 0.4s ease;
+}
+
+.navbar--transparent .navbar__logo {
+  filter: brightness(0) invert(1);
+}
+
+.navbar--transparent .navbar__hamburger-inner,
+.navbar--transparent .navbar__hamburger-inner::before,
+.navbar--transparent .navbar__hamburger-inner::after {
+  background-color: var(--color-white) !important;
+  transition: background-color 0.4s ease;
 }
 
 
@@ -1961,41 +1988,46 @@ button {
   background: var(--color-white);
   display: flex;
   flex-direction: column;
-  padding: 60px 8%;
+  padding: 120px 60px 120px 10%;
+  /* More on left/top to balance */
   justify-content: space-between;
   align-items: flex-start;
-  min-height: 85vh;
+  min-height: 90vh;
 }
 
 .about-page__hero-title {
   font-family: var(--font-header);
-  font-size: clamp(40px, 6vw, 84px);
+  font-size: clamp(48px, 8vw, 90px);
   color: var(--color-blue);
-  margin-bottom: 20px;
-  line-height: 1.1;
+  line-height: 1;
   font-weight: 700;
-  text-transform: uppercase;
+  letter-spacing: -0.04em;
 }
 
 .about-page__hero-logo {
   width: 100%;
-  max-width: 320px;
-  margin: 30px 0;
+  max-width: 280px;
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+
 }
 
 .about-page__hero-paragraph {
-  font-family: var(--font-body);
-  font-size: clamp(12px, 1vw, 14px);
-  line-height: 1.5;
-  text-align: justify;
+  font-family: var(--font-header);
+  font-size: clamp(15px, 2vw, 26px);
+  line-height: 1.25;
   color: var(--color-blue);
   text-transform: uppercase;
-  max-width: 500px;
+  max-width: 100%;
+  text-align: left;
+  font-weight: 400;
 }
 
 @media (max-width: 1024px) {
   .about-page__hero-split {
     flex-direction: column;
+    min-height: auto;
   }
 
   .about-page__hero-left {
@@ -2004,8 +2036,9 @@ button {
   }
 
   .about-page__hero-right {
-    padding: 60px 24px;
+    padding: 60px 24px 20px;
     align-items: center;
+    min-height: auto;
   }
 
   .about-page__hero-paragraph {
@@ -2023,38 +2056,250 @@ button {
   }
 }
 
-.about-page__info {
-  padding: 80px 40px 120px;
+/* ============================================
+   ABOUT PAGE SECTIONS
+   ============================================ */
+.about-approach {
+  padding: 160px 60px;
+  background-color: #F6F6F6;
+  overflow: hidden;
 }
 
-.about-page__info-grid {
+.about-approach__grid {
   display: grid;
-  grid-template-columns: 240px 1.2fr 1fr;
-  gap: 80px;
-  align-items: start;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  align-items: stretch;
 }
 
-.about-page__brands-intro {
-  margin: 100px 0;
+.about-approach__card {
+  padding: 80px 48px;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.about-purpose {
+  padding: 120px 60px 80px 60px;
+  background-color: #FFFFFF;
+  text-align: center;
+}
+
+.about-purpose__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 80px;
+  align-items: flex-start;
+}
+
+.about-purpose__item h3 {
+  font-family: var(--font-header);
+  font-size: 32px;
+  margin-bottom: 24px;
+  color: var(--color-blue);
+  letter-spacing: 0.1em;
+}
+
+.about-purpose__item p {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto;
+  color: var(--color-black);
+}
+
+.about-purpose__item {
   display: flex;
   flex-direction: column;
+  gap: 24px;
 }
 
-.about-page__brands-image {
+.about-purpose__line {
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-blue);
+  margin: 0 auto;
+}
+
+.about-brands h2 {
+  margin-bottom: 60px;
+}
+
+.brands-headline-wrapper {
+  position: absolute;
+  top: 15%;
+  left: 0;
   width: 100%;
-  height: auto;
+  z-index: 2;
+  text-align: center;
+  padding: 0 40px;
+}
+
+.philosophy-section {
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F6F6F6;
+  padding: 0 40px;
   overflow: hidden;
-  margin-bottom: -40px;
-  /* Slight overlap for premium feel */
+}
+
+.philosophy-card {
+  max-width: 1200px;
+  width: 100%;
+  background-color: #EBEBEB;
+  padding: 80px 80px;
   position: relative;
-  z-index: 1;
+  border-radius: 8px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
 }
 
-.about-page__brands-image img {
-  display: block;
+.philosophy-quote {
+  position: absolute;
 }
 
-/* about-page__cta removed */
+.philosophy-quote--top {
+  top: 40px;
+  left: 40px;
+}
+
+.philosophy-quote--bottom {
+  bottom: 40px;
+  right: 40px;
+}
+
+@media (max-width: 1024px) {
+  .about-approach {
+    padding: 60px 24px 100px;
+  }
+
+  .about-approach__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-approach__card {
+    padding: 60px 32px !important;
+  }
+
+  .about-purpose {
+    padding: 80px 24px;
+  }
+
+  .about-purpose__grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .philosophy-card {
+    padding: 80px 32px;
+  }
+
+  .about-approach__headline-secondary {
+    margin-bottom: 24px !important;
+  }
+
+  .about-brands h2 {
+    font-size: clamp(32px, 8vw, 42px) !important;
+  }
+
+  .about-brands .brands-headline-wrapper {
+    padding: 0 24px !important;
+    top: 15% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-approach {
+    padding: 40px 20px 20px;
+  }
+
+  .about-approach__grid {
+    gap: 16px;
+  }
+
+  .about-approach__headline-secondary {
+    margin-bottom: 24px !important;
+  }
+
+  .philosophy-card__headline {
+    margin-bottom: 16px;
+  }
+
+  .philosophy-section {
+    padding: 0 15px;
+    top: 60px;
+  }
+
+  .philosophy-card {
+    padding: 50px 20px;
+  }
+
+  .philosophy-quote img {
+    width: 32px !important;
+    height: auto !important;
+  }
+
+  .philosophy-quote--top {
+    top: 12px;
+    left: 12px;
+  }
+
+  .philosophy-quote--bottom {
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .about-approach__card {
+    padding: 32px 20px !important;
+  }
+
+  .about-purpose {
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .about-purpose__grid {
+    gap: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-purpose__line {
+    margin: 8px auto 16px;
+  }
+
+  .brands-headline-wrapper {
+    top: 6% !important;
+    padding: 0 10px !important;
+  }
+
+  .about-brands h2 {
+    font-size: 22px !important;
+    white-space: nowrap !important;
+  }
+
+  .about-approach h2 {
+    margin-bottom: 30px !important;
+  }
+
+  .philosophy-card h2 {
+    font-size: 32px !important;
+    margin-bottom: 32px !important;
+  }
+
+  .philosophy-card p {
+    font-size: 20px !important;
+    line-height: 1.4 !important;
+  }
+
+  .about-brands .brands-headline-wrapper {
+    top: 10% !important;
+  }
+}
 
 /* ============================================
    RESPONSIVE OVERRIDES FOR PAGES
@@ -2117,6 +2362,10 @@ button {
 
   .about-page__hero {
     padding: 0;
+  }
+
+  .about-page__hero-right {
+    padding: 40px 20px 0px !important;
   }
 
   .about-page__hero-content {

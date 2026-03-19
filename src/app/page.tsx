@@ -162,7 +162,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <a href="/contact" className="hero__button">START A PROJECT</a>
+              <Link href="/contact" className="hero__button">START A PROJECT</Link>
             </motion.div>
           </div>
         </motion.div>

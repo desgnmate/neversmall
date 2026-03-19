@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, notFound } from "next/navigation";
 import Image from "next/image";
 import { fetchProjectBySlug, type Project } from "../../lib/supabase";
+import Link from "next/link";
 import { PROJECTS } from "../../data/projects";
 import AnimatedLink from "../../components/AnimatedLink";
 import { motion, AnimatePresence } from "framer-motion";
@@ -84,7 +85,7 @@ export default function ProjectDetail() {
                     variants={fadeInUp}
                 >
                     <p className="sp-hero__breadcrumb">
-                        <a href="/">HOME</a> / <a href="/projects">PROJECTS</a> / {project.category.toUpperCase()}
+                        <Link href="/">HOME</Link> / <Link href="/projects">PROJECTS</Link> / {project.category.toUpperCase()}
                     </p>
                     <h1 className="sp-hero__title" style={{ color: 'var(--color-white)' }}>
                         {project.title.split(' ').map((word, i) => (

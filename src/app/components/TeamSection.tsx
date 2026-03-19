@@ -35,7 +35,7 @@ export default function TeamSection() {
                     viewport={{ once: true, margin: "-100px" }}
                     variants={fadeInUp}
                 >
-                    <h2 className="team-section__title">OUR TEAM</h2>
+                    <h2 className="team-section__title" style={{ textTransform: "none" }}>Our Team <span style={{ fontSize: "0.8em" }}>↘</span></h2>
                 </motion.div>
 
                 <motion.div

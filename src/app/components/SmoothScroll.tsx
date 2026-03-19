@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Lenis from "lenis";
 
@@ -10,6 +10,10 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     const router = useRouter();
 
     useEffect(() => {
+        if ('scrollRestoration' in window.history) {
+            window.history.scrollRestoration = 'manual';
+        }
+
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -88,7 +92,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
                     sessionStorage.setItem('pendingLenisHash', hashPart);
 
                     // Navigate to the base route cleanly (no hash) so it lands at the top first
-                    window.location.href = pathPart || '/';
+                    router.push(pathPart || '/');
                 }
             }
         };
@@ -97,7 +101,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
         // Use capture true so we can prevent Next.js Link from triggering!
         document.addEventListener('click', handleHashClick, { capture: true });
         return () => document.removeEventListener('click', handleHashClick, { capture: true });
-    }, []);
+    }, [router]);
 
     // Handle cross-page hash navigations
     useEffect(() => {
@@ -133,6 +137,17 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
                 }, 300);
                 return () => clearTimeout(timer);
             }
+        }
+    }, [pathname]);
+
+    // Force scroll to top on standard navigation (non-hash route changes)
+    useEffect(() => {
+        if (!lenisRef.current) return;
+
+        // Give Next.js and the Page Loader a tiny moment to switch the content
+        const pendingHash = sessionStorage.getItem('pendingLenisHash');
+        if (!pendingHash && !window.location.hash) {
+            lenisRef.current.scrollTo(0, { immediate: true });
         }
     }, [pathname]);
 
