@@ -239,6 +239,46 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* ── Brands Section ── */}
+      <section className="about-brands" style={{
+        position: "relative",
+        width: "100%",
+        backgroundColor: "#F6F6F6"
+      }}>
+        <div style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          overflow: "hidden"
+        }}>
+          <div style={{ width: "100%", position: "relative" }}>
+            {/* Overlay headline on the image's blue top area */}
+            <div className="brands-headline-wrapper">
+              <motion.h2
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+                className="about-section-headline"
+                style={{ color: 'var(--color-white)' }}
+              >
+                Brands we&apos;ve worked with <span className="about-section-headline__arrow">↘</span>
+              </motion.h2>
+            </div>
+
+            <Image
+              src="/images/about/brands.png"
+              alt="Brands we've worked with"
+              width={1920}
+              height={600}
+              style={{ width: "100%", height: "auto", display: "block", objectFit: "cover" }}
+              priority
+            />
+          </div>
+        </div>
+      </section>
+
 
       {/* ── Projects Section ── */}
       <section id="projects" className="projects" aria-label="Our projects">

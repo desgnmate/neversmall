@@ -2851,22 +2851,24 @@ body.lightbox-open .navbar__hamburger {
     visibility: visible !important;
     opacity: 1 !important;
     align-items: center;
-    padding: 10px;
+    justify-content: center;
     background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 30000 !important;
+    z-index: 30001 !important;
     pointer-events: auto !important;
-    height: 40px;
-    width: 40px;
+    height: 56px;
+    /* Increased hit area */
+    width: 56px;
+    /* Increased hit area */
+    position: fixed !important;
+    right: 12px !important;
+    top: 8px !important;
+    transition: all 0.2s ease;
   }
 
   .navbar__hamburger.active {
-    position: fixed !important;
-    right: 20px !important;
-    top: 20px !important;
-    z-index: 9999 !important;
-    /* Ensure it stays above everything */
+    z-index: 30001 !important;
   }
 
   .navbar__hamburger.active .navbar__hamburger-inner,

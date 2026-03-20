@@ -18,7 +18,12 @@ export default function BrandsSection() {
     const duplicatedBrands = [...BRANDS, ...BRANDS, ...BRANDS];
 
     return (
-        <section className="brands-section" aria-label="Brands we've worked with">
+        <section className="brands-section" aria-label="Brands we've worked with" style={{ padding: '80px 0 100px', backgroundColor: '#FFF' }}>
+            <div className="section-container" style={{ padding: '0 40px', marginBottom: '60px' }}>
+                <div className="brands-section__header">
+                    <h2 className="brands-section__title" style={{ fontFamily: 'var(--font-header)', fontSize: '14px', fontWeight: 600, letterSpacing: '0.15em', color: 'rgba(0,0,0,0.5)', textTransform: 'uppercase' }}>BRANDS WE&apos;VE WORKED WITH</h2>
+                </div>
+            </div>
 
             <div className="brands-section__marquee-wrapper">
                 <motion.div
