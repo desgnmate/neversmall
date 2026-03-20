@@ -433,13 +433,7 @@ body.lightbox-open .navbar__hamburger {
 }
 
 .hero__pattern-overlay {
-  position: absolute;
-  inset: 0;
-  background-image: url('/images/hero-pattern.png');
-  background-repeat: repeat;
-  opacity: 0.9;
-  z-index: 1;
-  pointer-events: none;
+  display: none;
 }
 
 .hero__masked-logo-wrapper {
@@ -447,29 +441,34 @@ body.lightbox-open .navbar__hamburger {
   top: 0;
   bottom: 0;
   right: 0;
-  width: 55%;
+  width: 60%;
   height: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
   z-index: 2;
   pointer-events: none;
+  overflow: hidden;
 }
 
+/* Hide mobile version by default on desktop */
 .hero__masked-logo-wrapper--mobile {
   display: none;
 }
 
-.hero__masked-logo {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  object-fit: contain;
+/* Desktop version is visible by default */
+.hero__masked-logo-wrapper--desktop {
+  display: block;
 }
 
-.hero__bg-wrapper {
-  /* No longer used, replaced by manual elements above */
-  display: none;
+@media (max-width: 768px) {
+  .hero__masked-logo-wrapper--desktop {
+    display: none;
+  }
+
+  .hero__masked-logo-wrapper--mobile {
+    display: block;
+    width: 100%;
+    right: 0;
+    left: 0;
+  }
 }
 
 .hero__content {
@@ -2838,8 +2837,8 @@ body.lightbox-open .navbar__hamburger {
   }
 
   .navbar__logo img {
-    height: 24px !important;
-    width: auto;
+    height: 36px !important;
+    width: auto !important;
   }
 
   .navbar__actions {

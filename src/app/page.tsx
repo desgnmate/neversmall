@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import ServiceItem from "./components/ServiceItem";
 import ProjectGallery from "./components/ProjectGallery";
 import AnimatedLink from "./components/AnimatedLink";
@@ -57,6 +57,9 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [displayServices, setDisplayServices] = useState<any[]>(SERVICES);
 
+  const { scrollY } = useScroll();
+  const yParallax = useTransform(scrollY, [0, 1000], [0, 400]);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -99,40 +102,64 @@ export default function Home() {
         >
           {/* 1. Underlying blue background layer (via CSS) */}
 
-          {/* 2. The masked logo image (Desktop) */}
-          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--desktop">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, rotate: 5 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay: 0.2 }}
-              className="hero__masked-logo"
-            >
-              <Image
-                src="/images/hero-masked-logo.png"
-                alt=""
-                fill
-                priority
-                style={{ objectFit: 'contain', objectPosition: 'right' }}
-              />
-            </motion.div>
+          {/* 1. Cinematic Mascot Masked Reveal (Desktop) */}
+          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--desktop" style={{ height: '100%', width: 'auto', aspectRatio: '1925 / 1810', right: '0px' }}>
+            <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+              {/* Layer 1: Parallaxing Content (Visible through the hole) */}
+              <motion.div
+                style={{ y: yParallax, height: '140%', width: '100%', position: 'absolute', top: '-20%' }}
+              >
+                <Image
+                  src="/imagebehindlogomask.jpg"
+                  alt=""
+                  fill
+                  priority
+                  style={{ objectFit: 'cover' }}
+                  unoptimized
+                />
+              </motion.div>
+
+              {/* Layer 2: Punch-out Overlay (Blue "Solid Wall" with Mascot Hole) */}
+              <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                <Image
+                  src="/mask-v2.svg"
+                  alt=""
+                  fill
+                  priority
+                  style={{ objectFit: 'fill' }}
+                />
+              </div>
+            </div>
           </div>
 
-          {/* 2b. The masked logo image (Mobile) */}
-          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--mobile">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, delay: 0.2 }}
-              className="hero__masked-logo"
-            >
-              <Image
-                src="/images/herobglogomobile.png"
-                alt=""
-                fill
-                priority
-                style={{ objectFit: 'cover', objectPosition: 'center' }}
-              />
-            </motion.div>
+          {/* 1b. Cinematic Mascot Masked Reveal (Mobile) - Centered and fitted */}
+          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--mobile" style={{ height: '100%', width: 'auto', aspectRatio: '1925 / 1810', left: '0', right: '0', margin: '0 auto', opacity: 0.6 }}>
+            <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+              {/* Layer 1: Parallaxing Content */}
+              <motion.div
+                style={{ y: yParallax, height: '140%', width: '100%', position: 'absolute', top: '-10%' }}
+              >
+                <Image
+                  src="/imagebehindlogomask.jpg"
+                  alt=""
+                  fill
+                  priority
+                  style={{ objectFit: 'cover' }}
+                  unoptimized
+                />
+              </motion.div>
+
+              {/* Layer 2: Punch-out Overlay */}
+              <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+                <Image
+                  src="/mask-v2.svg"
+                  alt=""
+                  fill
+                  priority
+                  style={{ objectFit: 'fill' }}
+                />
+              </div>
+            </div>
           </div>
 
           <div className="hero__content">
