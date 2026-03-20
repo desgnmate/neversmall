@@ -18,6 +18,7 @@ export default function Navbar() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
     // Close menu on navigation 
     useEffect(() => {
@@ -27,18 +28,28 @@ export default function Navbar() {
     // Scroll listener for detail pages transparency transition
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 100) {
+            const threshold = window.innerHeight * 0.9;
+            if (window.scrollY > threshold) {
                 setIsScrolled(true);
             } else {
                 setIsScrolled(false);
             }
         };
 
+        // Check for lightbox
+        const checkLightbox = () => {
+            const lightbox = document.querySelector('.lightbox');
+            setIsLightboxOpen(!!lightbox);
+        };
+
+        const interval = setInterval(checkLightbox, 500);
         window.addEventListener('scroll', handleScroll);
-        // Initial check
         handleScroll();
 
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            clearInterval(interval);
+        };
     }, []);
 
     const isDetailPage = pathname.includes('/projects/') || pathname.includes('/services/');
@@ -56,13 +67,15 @@ export default function Navbar() {
                     position: 'fixed',
                     right: '24px',
                     top: '25px',
-                    zIndex: 20000
+                    zIndex: 30000,
+                    display: isLightboxOpen ? 'none' : 'flex'
                 }}
             >
                 <div className="navbar__hamburger-box">
                     <span className="navbar__hamburger-inner" style={{
-                        backgroundColor: (showTransparent && !isMenuOpen) ? 'var(--color-white)' : 'var(--color-black)'
-                    }}></span>
+                        backgroundColor: (showTransparent && !isMenuOpen) ? 'var(--color-white)' : 'var(--color-black)',
+                        '--bar-color': (showTransparent && !isMenuOpen) ? 'var(--color-white)' : 'var(--color-black)'
+                    } as any}></span>
                 </div>
             </button>
 

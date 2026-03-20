@@ -56,6 +56,8 @@ export interface Project {
     image: string;
     slug: string;
     gallery: string[];
+    project_context?: string;
+    creative_approach?: string;
     sort_order: number;
     created_at: string;
     updated_at: string;
@@ -68,6 +70,8 @@ export interface Service {
     image: string;
     href: string;
     slug?: string;
+    video?: string;
+    thumbnail?: string;
     content?: string;
     page_headline?: string;
     page_subheadline?: string;

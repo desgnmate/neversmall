@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimatedLink from "../components/AnimatedLink";
+import ArrowButton from "../components/ArrowButton";
 import { useCMS } from "../components/cms/CMSProvider";
 
 const fadeInUp = {
@@ -150,16 +151,10 @@ export default function Contact() {
                         </div>
 
                         <div style={{ marginTop: "16px" }}>
-                            <AnimatedLink
+                            <ArrowButton
                                 href={contactSettings?.cta_link || "/contact"}
-                                className="cta__button"
                                 text={contactSettings?.cta_text || "START A PROJECT"}
-                                style={{
-                                    backgroundColor: "var(--color-blue)",
-                                    padding: "20px 40px",
-                                    fontSize: "14px",
-                                    letterSpacing: "0.1em"
-                                }}
+                                variant="primary"
                             />
                         </div>
                     </motion.div>

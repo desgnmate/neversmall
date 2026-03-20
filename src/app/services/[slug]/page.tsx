@@ -6,6 +6,7 @@ import { useParams, notFound } from "next/navigation";
 import { fetchServiceBySlug, type Service } from "../../lib/supabase";
 import Link from "next/link";
 import AnimatedLink from "../../components/AnimatedLink";
+import ArrowButton from "../../components/ArrowButton";
 import Footer from "../../components/Footer";
 
 // We'll use a client component here because CMS data might change and we want to see it immediately
@@ -38,12 +39,13 @@ export default function DynamicServicePage() {
             {/* Hero */}
             <section className="sp-hero" aria-label={`${service.name} hero`}>
                 <div className="sp-hero__bg">
-                    <Image
-                        src={service.image}
-                        alt={service.name}
-                        fill
-                        priority
-                        style={{ objectFit: "cover" }}
+                    <video
+                        src={service.video || `/videos/${service.name.toLowerCase().replace(/\s+/g, '-')}.mp4`}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
                 </div>
                 <div className="sp-hero__overlay" />
@@ -119,7 +121,7 @@ export default function DynamicServicePage() {
                 </h2>
                 <div className="cta__content">
                     <p className="cta__subhead">Your project deserves Neversmall quality.</p>
-                    <AnimatedLink href="/#cta" className="cta__button" text="START A PROJECT" />
+                    <ArrowButton href="/contact" text="START A PROJECT" variant="primary" />
                 </div>
             </section>
         </main>

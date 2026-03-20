@@ -4,6 +4,7 @@ import { PROJECTS, type Project as StaticProject } from "../data/projects";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AnimatedLink from "../components/AnimatedLink";
+import ArrowButton from "../components/ArrowButton";
 import { useCMS } from "../components/cms/CMSProvider";
 import { type Project } from "../lib/supabase";
 
@@ -69,7 +70,7 @@ export default function Projects() {
                     </motion.div>
 
                     <motion.div className="projects-page__header-cta" variants={fadeInUp}>
-                        <AnimatedLink href="/contact" className="cta__button" text="START A PROJECT" />
+                        <ArrowButton href="/contact" text="START A PROJECT" variant="primary" />
                     </motion.div>
                 </motion.div>
             </section>

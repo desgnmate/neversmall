@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 import AnimatedLink from "../components/AnimatedLink";
+import ArrowButton from "../components/ArrowButton";
 import TeamSection from "../components/TeamSection";
 
 const fadeInUp = {
@@ -423,7 +424,7 @@ export default function About() {
                 >
                     <motion.p className="cta__subhead" variants={fadeInUp}>Your vision, our support.</motion.p>
                     <motion.div variants={fadeInUp}>
-                        <Link href="/contact" className="cta__button">START A PROJECT</Link>
+                        <ArrowButton href="/contact" text="START A PROJECT" variant="primary" />
                     </motion.div>
                 </motion.div>
             </section>

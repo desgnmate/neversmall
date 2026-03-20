@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import ServiceItem from "./components/ServiceItem";
 import ProjectGallery from "./components/ProjectGallery";
 import AnimatedLink from "./components/AnimatedLink";
+import ArrowButton from "./components/ArrowButton";
 import BrandsSection from "./components/BrandsSection";
 import TeamSection from "./components/TeamSection";
 
@@ -162,7 +163,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <Link href="/contact" className="hero__button">START A PROJECT</Link>
+              <ArrowButton href="/contact" text="START A PROJECT" variant="light" />
             </motion.div>
           </div>
         </motion.div>
@@ -369,7 +370,7 @@ export default function Home() {
         >
           <motion.p className="cta__subhead" variants={fadeInUp}>Don&apos;t sell yourself short.</motion.p>
           <motion.div variants={fadeInUp}>
-            <Link href="/contact" className="cta__button">START A PROJECT</Link>
+            <ArrowButton href="/contact" text="START A PROJECT" variant="primary" />
           </motion.div>
         </motion.div>
       </section>
