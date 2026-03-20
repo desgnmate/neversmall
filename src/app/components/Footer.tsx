@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import Image from 'next/image';
 import { useCMS } from "./cms/CMSProvider";
 import Link from 'next/link';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
 export default function Footer() {
   const { contactSettings, openPinModal } = useCMS();
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
   const clickTimesRef = useRef<number[]>([]);
   const footerRef = useRef<HTMLElement>(null);
 
@@ -31,6 +33,19 @@ export default function Footer() {
     }
   }, [openPinModal]);
 
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus('loading');
+    // Simulate API call
+    setTimeout(() => {
+      setStatus('success');
+      setEmail('');
+      setTimeout(() => setStatus('idle'), 3000);
+    }, 1200);
+  };
+
   return (
     <footer ref={footerRef} className="footer" style={{ overflow: 'hidden', position: 'relative', backgroundColor: '#F8F8F8', padding: 0 }}>
       <div className="footer__top" style={{ position: 'relative', zIndex: 10, backgroundColor: '#F8F8F8', paddingTop: '80px' }}>
@@ -49,9 +64,53 @@ export default function Footer() {
           <p className="footer__desc">
             Get the latest updates, insights, and tips<br />delivered to your inbox.
           </p>
-          <form className="footer__form" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="your email" className="footer__input" required />
-            <button type="submit" className="footer__submit">SUBSCRIBE</button>
+          <form className="footer__form" onSubmit={handleSubscribe}>
+            <input
+              type="email"
+              placeholder="YOUR EMAIL"
+              className="footer__input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={status === 'loading' || status === 'success'}
+              style={{ textTransform: 'uppercase' }}
+            />
+            <button
+              type="submit"
+              className="footer__submit"
+              disabled={status === 'loading' || status === 'success'}
+            >
+              <AnimatePresence mode="wait">
+                {status === 'loading' ? (
+                  <motion.span
+                    key="loading"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    ...
+                  </motion.span>
+                ) : status === 'success' ? (
+                  <motion.span
+                    key="success"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    THANKS!
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="idle"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    SUBSCRIBE
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
           </form>
         </div>
 

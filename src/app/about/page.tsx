@@ -159,9 +159,9 @@ export default function About() {
                         whileInView="visible"
                         viewport={{ once: true }}
                         variants={fadeInUp}
-                        className="about-approach__headline-secondary"
+                        className="about-section-headline"
                     >
-                        Our Approach <span style={{ fontSize: "0.8em" }}>↘</span>
+                        Our Approach <span className="about-section-headline__arrow">↘</span>
                     </motion.h2>
 
                     <div className="about-approach__grid">
@@ -247,8 +247,8 @@ export default function About() {
                         </div>
 
                         <div style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
-                            <h2 className="philosophy-card__headline">
-                                Our Philosophy <span style={{ fontSize: "0.8em" }}>↘</span>
+                            <h2 className="about-section-headline" style={{ marginBottom: '40px' }}>
+                                Our Philosophy <span className="about-section-headline__arrow">↘</span>
                             </h2>
 
                             <p style={{
@@ -286,15 +286,9 @@ export default function About() {
                     <div style={{ textAlign: "center", marginBottom: "100px" }}>
                         <motion.h2
                             variants={fadeInUp}
-                            style={{
-                                fontFamily: "var(--font-header)",
-                                fontSize: "clamp(48px, 8vw, 100px)",
-                                color: "var(--color-blue)",
-                                fontWeight: 700,
-                                marginBottom: "20px"
-                            }}
+                            className="about-section-headline"
                         >
-                            Our Purpose <span style={{ fontSize: "0.8em" }}>↘</span>
+                            Our Purpose <span className="about-section-headline__arrow">↘</span>
                         </motion.h2>
                         <motion.p
                             variants={fadeInUp}
@@ -387,16 +381,10 @@ export default function About() {
                                 whileInView="visible"
                                 viewport={{ once: true }}
                                 variants={fadeInUp}
-                                style={{
-                                    fontFamily: "var(--font-header)",
-                                    fontSize: "clamp(32px, 4.5vw, 64px)",
-                                    color: "var(--color-white)",
-                                    fontWeight: 700,
-                                    margin: 0,
-                                    whiteSpace: "nowrap"
-                                }}
+                                className="about-section-headline"
+                                style={{ color: 'var(--color-white)' }}
                             >
-                                Brands we&apos;ve worked with <span style={{ fontSize: "0.8em" }}>↘</span>
+                                Brands we&apos;ve worked with <span className="about-section-headline__arrow">↘</span>
                             </motion.h2>
                         </div>
 

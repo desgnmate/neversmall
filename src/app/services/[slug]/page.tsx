@@ -27,11 +27,7 @@ export default function DynamicServicePage() {
         load();
     }, [slug]);
 
-    if (loading) return (
-        <div className="service-loading" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f6f6f6' }}>
-            <p style={{ fontFamily: 'var(--font-header)', fontSize: '24px' }}>LOADING SERVICE...</p>
-        </div>
-    );
+    if (loading) return null;
 
     if (!service) {
         notFound();

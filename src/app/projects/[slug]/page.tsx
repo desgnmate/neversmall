@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, notFound } from "next/navigation";
 import Image from "next/image";
-import { fetchProjectBySlug, type Project } from "../../lib/supabase";
+import { fetchProjectBySlug, fetchProjects, type Project } from "../../lib/supabase";
 import Link from "next/link";
 import { PROJECTS } from "../../data/projects";
 import AnimatedLink from "../../components/AnimatedLink";
@@ -34,39 +34,39 @@ export default function ProjectDetail() {
     const params = useParams();
     const slug = params.slug as string;
     const [project, setProject] = useState<Project | null>(null);
+    const [allProjects, setAllProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         window.scrollTo(0, 0);
         async function load() {
-            // First try CMS data
-            let data = await fetchProjectBySlug(slug);
+            // Find static data immediately for zero-delay feel
+            const staticData = PROJECTS.find((p) => p.slug === slug) as any;
+            if (staticData) setProject(staticData);
 
-            // Fallback to static data
-            if (!data) {
-                data = PROJECTS.find((p) => p.slug === slug) as any;
-            }
+            // Fetch current project from CMS for latest
+            const cmsData = await fetchProjectBySlug(slug);
+            if (cmsData) setProject(cmsData);
 
-            setProject(data);
+            // Fetch all projects for the thumbs strip
+            const projectsData = await fetchProjects();
+            setAllProjects(projectsData.length > 0 ? projectsData : PROJECTS as any);
+
             setLoading(false);
         }
         load();
     }, [slug]);
 
-    if (loading) return (
-        <div className="service-loading" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f6f6f6' }}>
-            <p style={{ fontFamily: 'var(--font-header)', fontSize: '24px' }}>LOADING PROJECT...</p>
-        </div>
-    );
-
-    if (!project) {
+    if (!project && !loading) {
         notFound();
     }
 
+    if (!project) return null;
+
     return (
         <main className="page-wrapper project-wrapper" style={{ background: 'var(--color-white)' }}>
-            {/* Cinematic Hero Section - Matching Service Pages 100vh Layout */}
-            <section className="sp-hero" aria-label={`${project.title} hero`}>
+            {/* Cinematic Hero Section - Exact Match Refinement */}
+            <section className="sp-hero sp-hero--redesign" aria-label={`${project.title} hero`}>
                 <div className="sp-hero__bg">
                     <Image
                         src={project.image}
@@ -77,25 +77,63 @@ export default function ProjectDetail() {
                         style={{ objectFit: "cover" }}
                     />
                 </div>
-                <div className="sp-hero__overlay" />
-                <motion.div
-                    className="sp-hero__content"
-                    initial="hidden"
-                    animate="visible"
-                    variants={fadeInUp}
-                >
-                    <p className="sp-hero__breadcrumb">
-                        <Link href="/">HOME</Link> / <Link href="/projects">PROJECTS</Link> / {project.category.toUpperCase()}
-                    </p>
-                    <h1 className="sp-hero__title" style={{ color: 'var(--color-white)' }}>
-                        {project.title.split(' ').map((word, i) => (
-                            <span key={i}>{word.toUpperCase()}<br /></span>
+
+                {/* Cinematic Gradients */}
+                <div className="sp-hero__gradient sp-hero__gradient--top" />
+                <div className="sp-hero__gradient sp-hero__gradient--bottom" />
+
+                {/* Top Meta Area */}
+                <div className="sp-hero__top-meta">
+                    <div className="sp-hero__meta-left">
+                        <motion.p
+                            className="sp-hero__breadcrumb"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                        >
+                            <Link href="/">HOME</Link> / <Link href="/projects">PROJECTS</Link> / {project.category.toUpperCase()}
+                        </motion.p>
+                        <motion.h1
+                            className="sp-hero__title sp-hero__title--refined"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8, delay: 0.1 }}
+                        >
+                            {project.title.toUpperCase()}
+                        </motion.h1>
+                    </div>
+
+                    <motion.div
+                        className="sp-hero__meta-right"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <p className="sp-hero__top-desc">
+                            {project.description}
+                        </p>
+                    </motion.div>
+                </div>
+
+                {/* Bottom Strip: Other Projects */}
+                <div className="sp-hero__bottom-strip">
+                    <div className="sp-hero__thumbs-container">
+                        {allProjects.filter(p => p.slug !== slug).slice(0, 10).map((p, idx) => (
+                            <Link key={p.id || idx} href={`/projects/${p.slug}`} className="sp-hero__thumb-link">
+                                <motion.div
+                                    className="sp-hero__thumb"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.6 + (idx * 0.1) }}
+                                    whileHover={{ scale: 1.05 }}
+                                >
+                                    <Image src={p.image} alt={p.title} fill style={{ objectFit: 'cover' }} />
+                                    <div className="sp-hero__thumb-overlay" />
+                                </motion.div>
+                            </Link>
                         ))}
-                    </h1>
-                    <p className="sp-hero__subtitle" style={{ maxWidth: '600px', color: 'rgba(246, 246, 246, 0.8)' }}>
-                        {project.description}
-                    </p>
-                </motion.div>
+                    </div>
+                </div>
             </section>
 
             {/* Overview / Context Section - Refined Grid & Spacing */}

@@ -1583,6 +1583,185 @@ button {
   margin-top: 16px;
 }
 
+/* --- Redesign: sp-hero--redesign --- */
+.sp-hero--redesign {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 80px 60px !important;
+  background-color: #000;
+}
+
+.sp-hero__gradient {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sp-hero__gradient--top {
+  top: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+}
+
+.sp-hero__gradient--bottom {
+  bottom: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+}
+
+.sp-hero__top-meta {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.sp-hero__meta-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sp-hero__breadcrumb {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.sp-hero__title--refined {
+  font-family: var(--font-header);
+  font-weight: 700;
+  font-size: clamp(60px, 10vw, 120px) !important;
+  line-height: 0.9 !important;
+  letter-spacing: -0.02em !important;
+  text-transform: uppercase;
+  color: #fff !important;
+  margin: 0;
+}
+
+.sp-hero__meta-right {
+  max-width: 480px;
+  text-align: right;
+  margin-top: 24px;
+  /* Offset to align with the headline, accounting for breadcrumb + gap */
+}
+
+.sp-hero__top-desc {
+  font-family: var(--font-subheader);
+  font-size: clamp(14px, 1.2vw, 18px);
+  font-weight: 500;
+  color: #fff !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.sp-hero__bottom-strip {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  margin-bottom: -20px;
+}
+
+.sp-hero__thumbs-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sp-hero__thumbs-container::-webkit-scrollbar {
+  display: none;
+}
+
+.sp-hero__thumb-link:nth-child(n+7) {
+  display: none;
+}
+
+.sp-hero__thumb {
+  position: relative;
+  width: clamp(140px, 15vw, 220px);
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sp-hero__thumb img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sp-hero__thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.sp-hero__thumb:hover .sp-hero__thumb-overlay {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+@media (max-width: 1024px) {
+  .sp-hero--redesign {
+    padding: 100px 32px 40px !important;
+  }
+
+  .sp-hero__top-meta {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .sp-hero__meta-right {
+    text-align: left;
+    max-width: 100%;
+    margin-top: 0;
+    /* Reset offset for mobile stacking */
+  }
+
+  .sp-hero__bottom-strip {
+    margin-bottom: 0;
+  }
+
+  .sp-hero__thumb-link:nth-child(n+7) {
+    display: block;
+  }
+}
+
+@media (min-width: 1440px) {
+  .sp-hero__thumb-link:nth-child(n+9) {
+    display: block;
+  }
+}
+
+@media (min-width: 1920px) {
+  .sp-hero__thumb-link:nth-child(n+11) {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .sp-hero--redesign {
+    min-height: 80vh !important;
+    height: auto !important;
+  }
+
+  .sp-hero__title--refined {
+    font-size: 56px !important;
+  }
+}
+
 /* --- Service Overview --- */
 .sp-overview {
   padding: 150px 40px;
@@ -2056,6 +2235,29 @@ button {
   }
 }
 
+.about-section-headline {
+  font-family: var(--font-header);
+  font-size: clamp(32px, 6vw, 64px);
+  color: var(--color-blue);
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.02em;
+  margin-bottom: 100px;
+  line-height: .8;
+}
+
+.about-section-headline__arrow {
+  font-size: 0.8em;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (min-width: 1440px) {
+  .about-section-headline {
+    font-size: 80px;
+  }
+}
+
 /* ============================================
    ABOUT PAGE SECTIONS
    ============================================ */
@@ -2126,7 +2328,7 @@ button {
 
 .brands-headline-wrapper {
   position: absolute;
-  top: 15%;
+  top: 8%;
   left: 0;
   width: 100%;
   z-index: 2;
@@ -2207,7 +2409,7 @@ button {
 
   .about-brands .brands-headline-wrapper {
     padding: 0 24px !important;
-    top: 15% !important;
+    top: 6% !important;
   }
 }
 
