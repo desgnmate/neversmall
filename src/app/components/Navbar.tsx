@@ -106,7 +106,7 @@ export default function Navbar() {
                 role="navigation"
                 aria-label="Main navigation"
                 style={{
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: showTransparent ? 'transparent' : '#FFFFFF',
                     borderBottom: isPageScrolled ? '1px solid rgba(0, 0, 0, 0.05)' : 'none',
                     transition: 'all 0.3s ease'
                 }}

@@ -189,7 +189,7 @@ export default function ProjectDetail() {
                 <div
                     ref={containerRef}
                     className="sp-hero__bottom-strip"
-                    style={{ position: 'relative', zIndex: 10, width: '100%', marginBottom: '-20px' }}
+                    style={{ position: 'relative', zIndex: 10, width: '100%' }}
                 >
                     {/* Discovery Label & Nav Buttons */}
                     <motion.div
