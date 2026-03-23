@@ -71,6 +71,29 @@
   --font-subheader: 'Pathway Extreme', 'BC Liguria', 'Georgia', serif;
   --font-body: 'Schibsted Grotesk', 'OCR-A', 'Courier New', sans-serif;
   --font-area: 'Area Normal', 'Arial', sans-serif;
+  --grid-margin: 40px;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --grid-margin: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --grid-margin: 20px;
+  }
+
+  .home-wrapper,
+  .page-wrapper.home-wrapper,
+  .page-wrapper.about-page {
+    padding-top: 80px !important;
+  }
+
+  .hero {
+    padding-bottom: 20px !important;
+  }
 }
 
 /* --- Reset & Base --- */
@@ -139,13 +162,16 @@ body {
 }
 
 .page-wrapper {
-  padding-top: 0;
+  padding-top: 100px !important;
+  /* Forced clearance for fixed navbar */
   background-color: var(--color-white);
   min-height: 100vh;
 }
 
-.home-wrapper {
-  padding-top: 80px;
+.home-wrapper,
+.page-wrapper.home-wrapper,
+.page-wrapper.about-page {
+  padding-top: 80px !important;
 }
 
 /* Home wrapper inherits 0 padding-top */
@@ -182,24 +208,38 @@ button {
   display: flex;
   align-items: stretch;
   justify-content: flex-start;
-  padding: 0;
+  padding: 0 var(--grid-margin);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
   width: 100%;
   height: 80px;
-  background-color: var(--color-white);
-  border-bottom: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar--at-top {
+  background-color: #FFFFFF !important;
+  /* Force white background even at top */
+}
+
+.navbar--scrolled {
+  background-color: #FFFFFF !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .navbar__logo-wrapper {
   display: flex;
   align-items: center;
-  padding: 0 40px;
-  border-right: none;
-  /* Removed border as requested */
+  padding: 0;
+}
+
+.navbar__logo img {
+  height: 54px !important;
+  width: auto !important;
+  margin-left: -4px;
+  /* Optical adjustment for mascot shape */
 }
 
 .navbar__logo {
@@ -251,8 +291,7 @@ button {
 
 .navbar__item--cta {
   border: none;
-  padding: 0 40px;
-  /* Boxed look removed but padding remains */
+  padding: 0 0 0 25px;
 }
 
 .navbar__item:hover,
@@ -327,7 +366,7 @@ button {
 .navbar--transparent {
   background-color: transparent !important;
   border-bottom: none !important;
-  transition: background-color 0.4s ease;
+  transition: all 0.4s ease;
 }
 
 body.lightbox-open .navbar,
@@ -397,13 +436,19 @@ body.lightbox-open .navbar__hamburger {
    HERO SECTION
    ============================================ */
 .hero {
-  padding: 0px 40px 40px;
-  /* Restored 40px horizontal margin */
+  padding: 0 0 55px 0;
+  /* Match the About section upper gap */
   background-color: var(--color-white);
   display: flex;
   flex-direction: column;
   gap: 0;
-  /* Minimized spacing */
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-bottom: 40px !important;
+    /* Reduced from 120px as per user request */
+  }
 }
 
 .hero__top-bar {
@@ -423,7 +468,8 @@ body.lightbox-open .navbar__hamburger {
 
 .hero__banner {
   position: relative;
-  width: 100%;
+  width: auto;
+  margin: 0 var(--grid-margin);
   flex: 1;
   background-color: var(--color-blue);
   display: flex;
@@ -1437,8 +1483,12 @@ body.lightbox-open .navbar__hamburger {
   overflow: hidden;
 }
 
-.project-detail-hero {
-  padding: 150px 0 100px 0;
+.service-wrapper {
+  padding-top: 0;
+}
+
+.project-detail-wrapper {
+  padding-top: 0;
 }
 
 .project-detail__container {
@@ -3893,22 +3943,33 @@ body.lightbox-open .navbar__hamburger {
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   justify-content: center;
+  align-items: stretch;
+  /* Force same height for all members in a row */
 }
 
 .team-section__member {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  /* Fill the grid cell */
 }
 
 .team-section__image-wrapper {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1 !important;
+  /* Force strict square aspect ratio */
+  width: 100%;
   overflow: hidden;
-  background-color: #fff;
+  background-color: transparent;
+  /* Removed #fff to prevent background bleed-through */
 }
 
 .team-section__image {
   object-fit: cover !important;
+  width: 100% !important;
+  /* Force width compatibility */
+  height: 100% !important;
+  /* Force height compatibility */
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -3919,12 +3980,18 @@ body.lightbox-open .navbar__hamburger {
 .team-section__info {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  /* Take up all remaining space to push footer items down */
 }
 
 .team-section__name-box {
   background-color: #fff;
   padding: 15px 20px;
   width: 100%;
+  flex-grow: 1;
+  /* Force name boxes to be same height in a row */
+  display: flex;
+  align-items: center;
 }
 
 .team-section__member-name {
@@ -3957,6 +4024,10 @@ body.lightbox-open .navbar__hamburger {
   font-size: clamp(11px, 0.9vw, 12px);
   color: var(--color-blue);
   text-decoration: none;
+  word-wrap: break-word;
+  /* Prevent long emails from stretching the grid cell */
+  white-space: normal;
+  display: block;
 }
 
 .team-section__member-email:hover {
@@ -3972,8 +4043,17 @@ body.lightbox-open .navbar__hamburger {
 
 @media (max-width: 768px) {
   .team-section__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    /* Force equal widths even if content is wide */
+    grid-auto-rows: 1fr;
+    /* Force all members in a row to have identical total height */
     gap: 24px;
+    align-items: stretch !important;
+  }
+
+  .team-section__member {
+    height: 100% !important;
+    display: flex !important;
   }
 
   .team-section__title {
@@ -3984,8 +4064,11 @@ body.lightbox-open .navbar__hamburger {
 @media (max-width: 480px) {
   .team-section__grid {
     grid-template-columns: repeat(2, 1fr) !important;
+    grid-auto-rows: 1fr !important;
+    /* Force columns to be aligned horizontally */
     /* Force 2 columns */
     gap: 12px !important;
+    align-items: stretch !important;
   }
 }
 
@@ -4083,11 +4166,13 @@ body.lightbox-open .navbar__hamburger {
   .hero {
     height: auto;
     min-height: 100vh;
-    padding: 80px 20px 40px;
+    padding: 0;
   }
 
   .hero__banner {
-    padding: 60px 40px;
+    padding: 60px 20px;
+    margin: 0 var(--grid-margin);
+    width: auto;
     grid-template-columns: 1fr;
     gap: 60px;
     text-align: center;
@@ -4101,24 +4186,25 @@ body.lightbox-open .navbar__hamburger {
 
 @media (max-width: 768px) {
   .hero {
-    padding: 0px 20px 20px;
+    padding: 0;
     height: auto;
     min-height: auto;
     display: flex;
     align-items: center;
     position: relative;
-    margin-top: -25px;
-    /* Pull it up more aggressively */
+    margin-top: 0;
   }
 
   .hero__banner {
-    padding: 40px 20px;
-    /* Much tighter padding */
+    margin: 0 var(--grid-margin) !important;
+    /* Forced alignment with navbar items */
+    width: auto !important;
+    /* Ensure it stays boxed to margins */
+    padding: 60px 20px;
     min-height: 380px;
     margin-bottom: 0;
     position: relative !important;
     overflow: hidden !important;
-    width: 100% !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;

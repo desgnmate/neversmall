@@ -46,19 +46,20 @@ export default function TeamSection() {
                     variants={staggerContainer}
                 >
                     {TEAM.map((member) => (
-                        <motion.div key={member.id} className="team-section__member" variants={fadeInUp}>
-                            <div className="team-section__image-wrapper">
+                        <motion.div key={member.id} className="team-section__member" variants={fadeInUp} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                            <div className="team-section__image-wrapper" style={{ aspectRatio: '1/1', backgroundColor: 'transparent', position: 'relative', overflow: 'hidden' }}>
                                 <Image
                                     src={member.image}
                                     alt={member.name}
                                     fill
                                     className="team-section__image"
                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 20vw, 300px"
+                                    style={{ objectFit: 'cover' }}
                                 />
                             </div>
-                            <div className="team-section__info">
-                                <div className="team-section__name-box">
-                                    <h3 className="team-section__member-name">{member.name}</h3>
+                            <div className="team-section__info" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                                <div className="team-section__name-box" style={{ flexGrow: 1, display: 'flex', alignItems: 'center', backgroundColor: '#fff', padding: '15px 20px' }}>
+                                    <h3 className="team-section__member-name" style={{ margin: 0 }}>{member.name}</h3>
                                 </div>
                                 <div className="team-section__details">
                                     <span className="team-section__member-role">{member.role}</span>

@@ -18,6 +18,7 @@ export default function Navbar() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isPageScrolled, setIsPageScrolled] = useState(false);
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
     // Close menu on navigation 
@@ -25,15 +26,17 @@ export default function Navbar() {
         setIsMenuOpen(false);
     }, [pathname]);
 
-    // Scroll listener for detail pages transparency transition
+    // Scroll listener for detail pages transparency transition and general scroll bg
     useEffect(() => {
-        const handleScroll = () => {
-            const threshold = window.innerHeight * 0.9;
-            if (window.scrollY > threshold) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
+        const handleScroll = (customScrollY?: number) => {
+            const scrollY = typeof customScrollY === 'number' ? customScrollY : window.scrollY;
+
+            // Threshold for detail pages (transparent to white)
+            const detailThreshold = window.innerHeight * 0.9;
+            setIsScrolled(scrollY > detailThreshold);
+
+            // Threshold for white background on scroll (homepage/about)
+            setIsPageScrolled(scrollY > 10);
         };
 
         // Check for lightbox
@@ -43,18 +46,37 @@ export default function Navbar() {
         };
 
         const interval = setInterval(checkLightbox, 500);
-        window.addEventListener('scroll', handleScroll);
+
+        // For Lenis compatibility, we also listen to the lenis scroll event if available
+        const checkLenis = setInterval(() => {
+            const lenis = (window as any).lenis;
+            if (lenis) {
+                lenis.on('scroll', (e: any) => {
+                    handleScroll(e.scroll);
+                });
+                // Initial check in case it's already scrolled
+                handleScroll(lenis.scroll);
+                clearInterval(checkLenis);
+            }
+        }, 500);
+
+        window.addEventListener('scroll', () => handleScroll(), { passive: true });
         handleScroll();
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', () => handleScroll());
             clearInterval(interval);
+            clearInterval(checkLenis);
+            const lenis = (window as any).lenis;
+            if (lenis) {
+                lenis.off('scroll', handleScroll);
+            }
         };
     }, []);
 
     const isDetailPage = pathname.includes('/projects/') || pathname.includes('/services/');
 
-    // Only apply transparent logic if on a detail page AND not scrolled down
+    // Only apply transparent logic if on a detail page AND not scrolled past detail threshold
     const showTransparent = isDetailPage && !isScrolled;
 
     return (
@@ -65,7 +87,7 @@ export default function Navbar() {
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                 style={{
                     position: 'fixed',
-                    right: '24px',
+                    right: 'var(--grid-margin, 40px)',
                     top: '25px',
                     zIndex: 30000,
                     display: isLightboxOpen ? 'none' : 'flex'
@@ -79,7 +101,16 @@ export default function Navbar() {
                 </div>
             </button>
 
-            <nav className={`navbar ${showTransparent ? 'navbar--transparent' : ''}`} role="navigation" aria-label="Main navigation">
+            <nav
+                className={`navbar ${showTransparent ? 'navbar--transparent' : ''} ${isPageScrolled ? 'navbar--scrolled' : 'navbar--at-top'}`}
+                role="navigation"
+                aria-label="Main navigation"
+                style={{
+                    backgroundColor: '#FFFFFF',
+                    borderBottom: isPageScrolled ? '1px solid rgba(0, 0, 0, 0.05)' : 'none',
+                    transition: 'all 0.3s ease'
+                }}
+            >
                 <div className="navbar__logo-wrapper">
                     <Link href="/" className="navbar__logo" aria-label="Neversmall Studios home">
                         <Image
@@ -138,6 +169,7 @@ export default function Navbar() {
                     <div className="navbar__end-cap"></div>
                 </div>
             </nav>
+
 
             <AnimatePresence>
                 {isMenuOpen && (
