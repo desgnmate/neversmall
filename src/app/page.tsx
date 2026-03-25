@@ -133,11 +133,11 @@ export default function Home() {
           </div>
 
           {/* 1b. Cinematic Mascot Masked Reveal (Mobile) - Centered and fitted */}
-          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--mobile" style={{ height: '100%', width: 'auto', aspectRatio: '1925 / 1810', left: '0', right: '0', margin: '0 auto', opacity: 0.6 }}>
+          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--mobile" style={{ height: '80%', width: 'auto', aspectRatio: '2199 / 2261', left: 0, right: 0, top: 0, bottom: 0, margin: 'auto', boxShadow: '0 0 0 5px #011EE6' }}>
             <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
-              {/* Layer 1: Parallaxing Content */}
+              {/* Layer 1: Parallaxing Content (Lower opacity to lessen impact) */}
               <motion.div
-                style={{ y: yParallax, height: '140%', width: '100%', position: 'absolute', top: '-10%' }}
+                style={{ y: yParallax, height: '140%', width: '100%', position: 'absolute', top: '-10%', opacity: 0.4 }}
               >
                 <Image
                   src="/imagebehindlogomask.jpg"
@@ -152,7 +152,7 @@ export default function Home() {
               {/* Layer 2: Punch-out Overlay */}
               <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
                 <Image
-                  src="/mask-v2.svg"
+                  src="/mask-v3.svg"
                   alt=""
                   fill
                   priority

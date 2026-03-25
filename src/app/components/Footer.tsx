@@ -156,7 +156,7 @@ export default function Footer() {
         <div className="footer__col footer__col--links">
           <h4 className="footer__heading">SERVICES</h4>
           <nav className="footer__nav-list">
-            <Link href="/services/videography" className="footer__link">VideoGraphy</Link>
+            <Link href="/services/videography" className="footer__link">Videography</Link>
             <Link href="/services/photography" className="footer__link">Photography</Link>
             <Link href="/services/social-management" className="footer__link">Social Management</Link>
             <Link href="/services/meta-ads" className="footer__link">Meta Ads</Link>

@@ -3065,9 +3065,9 @@ body.lightbox-open .navbar__hamburger {
   }
 
   .hero__headline {
-    font-size: clamp(40px, 12vw, 64px);
-    padding-top: 16px;
-    padding-bottom: 16px;
+    font-size: clamp(32px, 10vw, 48px) !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
   }
 
   .hero__meta {
@@ -3216,7 +3216,7 @@ body.lightbox-open .navbar__hamburger {
 
 @media (max-width: 480px) {
   .hero__headline {
-    font-size: clamp(32px, 14vw, 48px);
+    font-size: clamp(26px, 12vw, 38px) !important;
   }
 
 
@@ -4221,15 +4221,16 @@ body.lightbox-open .navbar__hamburger {
     justify-content: center !important;
     align-items: center !important;
     /* Reduced logo impact via darker overlay */
-    background: linear-gradient(rgba(0, 50, 255, 0.75), rgba(0, 50, 255, 0.75)),
-      url('/images/herobglogomobile.png') center / cover no-repeat !important;
+    background: var(--color-blue) !important;
   }
 
-  .hero__masked-logo-wrapper--mobile,
-  .hero__masked-logo-wrapper--desktop,
-  .hero__masked-logo-wrapper {
+  .hero__masked-logo-wrapper--mobile {
+    display: block !important;
+    z-index: 1 !important;
+  }
+
+  .hero__masked-logo-wrapper--desktop {
     display: none !important;
-    /* Background image handles it now */
   }
 
   .hero__masked-logo-wrapper--mobile img {
@@ -4240,10 +4241,11 @@ body.lightbox-open .navbar__hamburger {
   }
 
   .hero__headline {
-    font-size: clamp(56px, 16vw, 72px) !important;
-    line-height: 0.9 !important;
-    margin-bottom: 20px !important;
+    font-size: clamp(38px, 11.5vw, 54px) !important;
+    line-height: 0.92 !important;
+    margin-bottom: 16px !important;
     position: relative !important;
+    text-align: center !important;
     z-index: 2 !important;
     color: #fff !important;
   }
@@ -4274,6 +4276,12 @@ body.lightbox-open .navbar__hamburger {
 
 @media (max-width: 480px) {
   .navbar__item {
-    padding: 0 8px !important;
+    padding: 0 10px !important;
+  }
+
+  .hero__headline {
+    font-size: clamp(30px, 14vw, 44px) !important;
+    line-height: 0.95 !important;
+    margin-bottom: 24px !important;
   }
 }
