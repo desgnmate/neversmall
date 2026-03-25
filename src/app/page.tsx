@@ -133,8 +133,10 @@ export default function Home() {
           </div>
 
           {/* 1b. Cinematic Mascot Masked Reveal (Mobile) - Centered and fitted */}
-          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--mobile" style={{ height: '80%', width: 'auto', aspectRatio: '2199 / 2261', left: 0, right: 0, top: 0, bottom: 0, margin: 'auto', boxShadow: '0 0 0 5px #011EE6' }}>
-            <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+          <div className="hero__masked-logo-wrapper hero__masked-logo-wrapper--mobile" style={{ width: '95%', maxWidth: '420px', height: 'auto', aspectRatio: '2215 / 2295', left: 0, right: 0, top: 0, bottom: 0, margin: 'auto' }}>
+
+            {/* Layer 1 Container (Inset by 1px to guarantee it never reaches the subpixel anti-aliasing edge of the full bounds, eliminating bleed permanently) */}
+            <div style={{ position: 'absolute', top: 1, bottom: 1, left: 1, right: 1, overflow: 'hidden' }}>
               {/* Layer 1: Parallaxing Content (Lower opacity to lessen impact) */}
               <motion.div
                 style={{ y: yParallax, height: '140%', width: '100%', position: 'absolute', top: '-10%', opacity: 0.4 }}
@@ -148,17 +150,17 @@ export default function Home() {
                   unoptimized
                 />
               </motion.div>
+            </div>
 
-              {/* Layer 2: Punch-out Overlay */}
-              <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-                <Image
-                  src="/mask-v3.svg"
-                  alt=""
-                  fill
-                  priority
-                  style={{ objectFit: 'fill' }}
-                />
-              </div>
+            {/* Layer 2: Punch-out Overlay (Sits perfectly at edge 0, covering the 1px inset gap entirely with its solid background color) */}
+            <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+              <Image
+                src="/mask-v4.svg"
+                alt=""
+                fill
+                priority
+                style={{ objectFit: 'fill' }}
+              />
             </div>
           </div>
 
