@@ -117,21 +117,21 @@ export default function CMSPanel() {
 
                         {/* Tab Content */}
                         <div className="cms-panel__content" role="tabpanel" data-lenis-prevent>
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={activeTab}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    {activeTab === "Projects" && <CMSProjectsTab />}
-                                    {activeTab === "Services" && <CMSServicesTab />}
-                                    {activeTab === "Testimonials" && <CMSTestimonialsTab />}
-                                    {activeTab === "Contact" && <CMSContactTab />}
-                                    {activeTab === "Settings" && <CMSSettingsTab />}
-                                </motion.div>
-                            </AnimatePresence>
+                            <div className={`cms-tab-wrapper ${activeTab === "Projects" ? "active" : ""}`}>
+                                <CMSProjectsTab />
+                            </div>
+                            <div className={`cms-tab-wrapper ${activeTab === "Services" ? "active" : ""}`}>
+                                <CMSServicesTab />
+                            </div>
+                            <div className={`cms-tab-wrapper ${activeTab === "Testimonials" ? "active" : ""}`}>
+                                <CMSTestimonialsTab />
+                            </div>
+                            <div className={`cms-tab-wrapper ${activeTab === "Contact" ? "active" : ""}`}>
+                                <CMSContactTab />
+                            </div>
+                            <div className={`cms-tab-wrapper ${activeTab === "Settings" ? "active" : ""}`}>
+                                <CMSSettingsTab />
+                            </div>
                         </div>
 
                         {/* Custom Dialogs */}

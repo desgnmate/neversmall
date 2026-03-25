@@ -295,7 +295,7 @@ export default function Home() {
             </div>
 
             <Image
-              src="/images/about/brands.png"
+              src="/images/about/3.jpg"
               alt="Brands we've worked with"
               width={1920}
               height={600}

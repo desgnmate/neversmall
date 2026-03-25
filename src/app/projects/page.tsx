@@ -2,7 +2,8 @@
 
 import { PROJECTS, type Project as StaticProject } from "../data/projects";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import AnimatedLink from "../components/AnimatedLink";
 import ArrowButton from "../components/ArrowButton";
 import { useCMS } from "../components/cms/CMSProvider";
@@ -28,17 +29,42 @@ const staggerContainer = {
     }
 };
 
+function ProjectCard({ project, offsetClass }: { project: any; offsetClass: string }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "end start"]
+    });
+
+    // Parallax effect: moves smoothly while scrolling to feel like it's floating
+    const yParallax = useTransform(scrollYProgress, [0, 1], [60, -60]);
+
+    return (
+        <motion.div
+            ref={ref}
+            className={`projects-page__item ${offsetClass}`}
+            variants={fadeInUp}
+        >
+            <motion.div style={{ y: yParallax, display: "flex", flexDirection: "column", flex: 1 }}>
+                <div className="projects-page__image-wrapper" style={{ aspectRatio: "1/1" }}>
+                    <Image src={project.image} alt={project.title} fill style={{ objectFit: "cover" }} />
+                </div>
+                <div className="projects-page__item-content">
+                    <h3 className="projects-page__item-title">{project.title}</h3>
+                    <p className="projects-page__item-desc">{project.description}</p>
+                    <AnimatedLink href={`/projects/${project.slug}`} text="VIEW PROJECT" />
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+}
+
 export default function Projects() {
     const { projects: cmsProjects, isLoading } = useCMS();
 
     // Smart merge: Use CMS projects and fill in missing ones from static data
     // to ensure the page doesn't look empty during CMS setup.
-    const displayProjects = cmsProjects.length > 0
-        ? [
-            ...cmsProjects,
-            ...PROJECTS.filter(p => !cmsProjects.some(cp => cp.slug === p.slug || cp.title.toUpperCase() === p.title.toUpperCase()))
-        ]
-        : PROJECTS;
+    const displayProjects = cmsProjects.length > 0 ? cmsProjects : PROJECTS;
 
     // Sort by sort_order if available, or just keep as merged
     const sortedProjects = [...displayProjects].sort((a, b) => {
@@ -85,7 +111,6 @@ export default function Projects() {
                     variants={staggerContainer}
                 >
                     {sortedProjects.map((project: any, idx: number) => {
-                        const isEven = idx % 2 === 0;
                         const isLargeOffset = idx % 4 === 1;
                         const isSmallOffset = idx % 4 === 2;
 
@@ -93,26 +118,7 @@ export default function Projects() {
                         if (isLargeOffset) offsetClass = "projects-page__item--offset-large";
                         else if (isSmallOffset) offsetClass = "projects-page__item--offset-small";
 
-                        // Vary aspect ratios
-                        const aspectRatios = ["16/9", "4/3", "4/5", "1/1"];
-                        const aspectRatio = aspectRatios[idx % aspectRatios.length];
-
-                        return (
-                            <motion.div
-                                key={project.id || project.slug || project.title}
-                                className={`projects-page__item ${offsetClass}`}
-                                variants={fadeInUp}
-                            >
-                                <div className="projects-page__image-wrapper" style={{ aspectRatio }}>
-                                    <Image src={project.image} alt={project.title} fill style={{ objectFit: "cover" }} />
-                                </div>
-                                <div className="projects-page__item-content">
-                                    <h3 className="projects-page__item-title">{project.title}</h3>
-                                    <p className="projects-page__item-desc">{project.description}</p>
-                                    <AnimatedLink href={`/projects/${project.slug}`} text="VIEW PROJECT" />
-                                </div>
-                            </motion.div>
-                        );
+                        return <ProjectCard key={project.id || project.slug || project.title} project={project} offsetClass={offsetClass} />;
                     })}
                 </motion.div>
             </section>

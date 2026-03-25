@@ -171,7 +171,6 @@ export default function CMSProvider({ children }: { children: React.ReactNode })
         };
     }, [isAuthenticated]);
 
-    // Initial Mount Load (Consolidated)
     useEffect(() => {
         const initCMS = async () => {
             const storedToken = sessionStorage.getItem("cms_token");
@@ -285,6 +284,18 @@ export default function CMSProvider({ children }: { children: React.ReactNode })
         }
         return result;
     }, [refreshData]);
+
+    // Keyboard Shortcut: Shift + Alt + C
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.shiftKey && e.altKey && e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+                openPinModal();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [openPinModal]);
 
     const logout = useCallback(() => {
         sessionTokenRef.current = null;

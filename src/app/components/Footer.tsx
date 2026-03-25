@@ -11,6 +11,7 @@ export default function Footer() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
   const clickTimesRef = useRef<number[]>([]);
+  const lastClickRef = useRef<number>(0);
   const footerRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -20,14 +21,19 @@ export default function Footer() {
 
   const bannerY = useTransform(scrollYProgress, [0, 1], ["-50%", "0%"]);
 
-  const handleLogoClick = useCallback(() => {
+  const handleLogoClick = useCallback((e?: React.MouseEvent | React.TouchEvent) => {
     const now = Date.now();
+    // Prevent double-fires (touch + click) within 200ms
+    if (now - lastClickRef.current < 200) return;
+    lastClickRef.current = now;
+
     const times = clickTimesRef.current;
     times.push(now);
-    if (times.length > 5) {
+    if (times.length > 3) {
       times.shift();
     }
-    if (times.length === 5 && now - times[0] < 3000) {
+    // Debug point: Check 3 clicks in 3 seconds
+    if (times.length === 3 && now - times[0] < 3000) {
       openPinModal();
       clickTimesRef.current = [];
     }
@@ -50,8 +56,29 @@ export default function Footer() {
     <footer ref={footerRef} className="footer" style={{ overflow: 'hidden', position: 'relative', backgroundColor: '#F8F8F8', padding: 0 }}>
       <div className="footer__top" style={{ position: 'relative', zIndex: 10, backgroundColor: '#F8F8F8', paddingTop: '80px' }}>
         {/* Column 1: Newsletter & Logo */}
-        <div className="footer__col footer__col--newsletter">
-          <div className="footer__logo-container" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+        <div className="footer__col footer__col--newsletter" data-lenis-prevent>
+          <motion.button
+            type="button"
+            className="footer__logo-container"
+            onClick={handleLogoClick}
+            onTouchStart={handleLogoClick}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: '10px',
+              margin: '-10px',
+              cursor: 'pointer',
+              position: 'relative',
+              zIndex: 99999,
+              pointerEvents: 'auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 'max-content'
+            }}
+            aria-label="Admin access"
+          >
             {/* The user's image shows the black logo variant. */}
             <Image
               src="/images/logo.png"
@@ -60,7 +87,7 @@ export default function Footer() {
               height={50}
               className="footer__logo"
             />
-          </div>
+          </motion.button>
           <p className="footer__desc">
             Get the latest updates, insights, and tips<br />delivered to your inbox.
           </p>
@@ -159,13 +186,30 @@ export default function Footer() {
 
       <motion.div style={{ y: bannerY, position: 'relative', zIndex: 1 }}>
         {/* Re-added Banner with giant logo overlay */}
-        <div className="footer__banner">
+        <div className="footer__banner" style={{ display: 'flex', justifyContent: 'center' }}>
           <Image
             src="/images/neversmall-logo-white.png"
             alt="Neversmall"
             width={1200}
             height={200}
             className="footer__banner-logo"
+            onClick={handleLogoClick}
+            onTouchStart={handleLogoClick}
+            tabIndex={0}
+            role="button"
+            aria-label="Admin access"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleLogoClick();
+              }
+            }}
+            onDragStart={(e) => e.preventDefault()}
+            style={{
+              cursor: 'pointer',
+              pointerEvents: 'auto',
+              userSelect: 'none'
+            }}
           />
         </div>
 

@@ -97,7 +97,7 @@ export default function About() {
                 <div className="about-page__hero-split">
                     <div className="about-page__hero-left" style={{ position: "relative" }}>
                         <Image
-                            src="/images/about/about-hero-bg.jpg"
+                            src="/images/about/dasddasd.png"
                             alt="Neversmall Team"
                             fill
                             style={{ objectFit: "cover", objectPosition: "top center" }}
@@ -288,6 +288,7 @@ export default function About() {
                         <motion.h2
                             variants={fadeInUp}
                             className="about-section-headline"
+                            style={{ marginBottom: '20px' }}
                         >
                             Our Purpose <span className="about-section-headline__arrow">↘</span>
                         </motion.h2>
@@ -390,7 +391,7 @@ export default function About() {
                         </div>
 
                         <Image
-                            src="/images/about/brands.png"
+                            src="/images/about/3.jpg"
                             alt="Brands we've worked with"
                             width={1920}
                             height={600}
