@@ -169,12 +169,12 @@ export default function Footer() {
 
           <div className="footer__contact-item">
             <span className="footer__contact-label">Meeting</span>
-            <a href="https://calendar.app.google.com/jQ5L1G21d6d8sY7i6" target="_blank" rel="noopener noreferrer" className="footer__link-text">Book a Call</a>
+            <a href="https://calendar.app.google/wUNn93YLjshpsUo26" target="_blank" rel="noopener noreferrer" className="footer__link-text">Book a Call</a>
           </div>
 
           <div className="footer__contact-item">
             <span className="footer__contact-label">Email</span>
-            <a href={`mailto:${contactSettings?.email || "hello@neversmall.studio"}`} className="footer__link-text">neversmall.studio</a>
+            <a href={`mailto:${contactSettings?.email || "hello@neversmall.com.au"}`} className="footer__link-text">{contactSettings?.email ? contactSettings.email : "hello@neversmall.com.au"}</a>
           </div>
 
           <div className="footer__contact-item">
