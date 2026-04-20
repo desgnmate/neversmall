@@ -76,8 +76,19 @@ export default function Navbar() {
 
     const isDetailPage = pathname.includes('/projects/') || pathname.includes('/services/');
 
-    // Only apply transparent logic if on a detail page AND not scrolled past detail threshold
-    const showTransparent = isDetailPage && !isScrolled;
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        handleResize(); // initialize
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Only apply transparent logic if on a detail page AND not scrolled past detail threshold AND not on mobile
+    const showTransparent = isDetailPage && !isScrolled && !isMobile;
 
     return (
         <>

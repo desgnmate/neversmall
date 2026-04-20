@@ -2890,7 +2890,7 @@ body.lightbox-open .navbar__hamburger {
     left: 0;
     width: 100%;
     z-index: 20000 !important;
-    background-color: transparent !important;
+    background-color: #FFFFFF !important;
     padding-top: 10px !important;
   }
 
