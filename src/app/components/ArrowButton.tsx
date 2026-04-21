@@ -4,22 +4,18 @@ import React from "react";
 import Link from "next/link";
 
 interface ArrowButtonProps {
-    href: string;
+    href?: string;
     text: string;
     variant?: "primary" | "light" | "dark";
     className?: string;
     style?: React.CSSProperties;
     onClick?: () => void;
+    type?: "button" | "submit" | "reset";
+    disabled?: boolean;
 }
 
 /**
  * ArrowButton — A premium CTA button with a sliding arrow icon on hover.
- * Adapted from the Neversmall design language.
- *
- * Variants:
- *  - primary: Blue background, white text (default)
- *  - light: White background, blue text (for dark hero backgrounds)
- *  - dark: Black background, white text
  */
 export default function ArrowButton({
     href,
@@ -28,14 +24,11 @@ export default function ArrowButton({
     className = "",
     style,
     onClick,
+    type,
+    disabled = false
 }: ArrowButtonProps) {
-    return (
-        <Link
-            href={href}
-            className={`ns-arrow-btn ns-arrow-btn--${variant} ${className}`}
-            style={style}
-            onClick={onClick}
-        >
+    const content = (
+        <>
             <span className="ns-arrow-btn__text">{text}</span>
             <span className="ns-arrow-btn__icon" aria-hidden="true">
                 <svg
@@ -50,6 +43,26 @@ export default function ArrowButton({
                     <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
             </span>
+        </>
+    );
+
+    const commonProps = {
+        className: `ns-arrow-btn ns-arrow-btn--${variant} ${className}`,
+        style,
+        onClick
+    };
+
+    if (type) {
+        return (
+            <button {...commonProps} type={type} disabled={disabled}>
+                {content}
+            </button>
+        );
+    }
+
+    return (
+        <Link href={href || "#"} {...commonProps}>
+            {content}
         </Link>
     );
 }

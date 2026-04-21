@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useForm, ValidationError } from '@formspree/react';
 import AnimatedLink from "../components/AnimatedLink";
 import ArrowButton from "../components/ArrowButton";
 import { useCMS } from "../components/cms/CMSProvider";
@@ -51,12 +52,13 @@ const labelStyle = {
 
 export default function Contact() {
     const { contactSettings } = useCMS();
+    const [state, handleSubmit] = useForm('mlgawwdw');
 
     return (
         <main className="page-wrapper contact-page" style={{ backgroundColor: "#F6F6F6", paddingBottom: "120px" }}>
 
             {/* ── Header Section ── */}
-            <section style={{ padding: "140px 60px 80px" }} className="contact-page__header">
+            <section style={{ padding: "100px 60px 40px" }} className="contact-page__header">
                 <motion.div
                     style={{
                         display: "grid",
@@ -72,7 +74,7 @@ export default function Contact() {
                     <motion.div variants={fadeInUp}>
                         <h1 style={{
                             fontFamily: "var(--font-header)",
-                            fontSize: "clamp(60px, 12vw, 140px)",
+                            fontSize: "clamp(34px, 11vw, 120px)",
                             lineHeight: 0.85,
                             letterSpacing: "-0.04em",
                             color: "var(--color-blue)",
@@ -80,9 +82,11 @@ export default function Contact() {
                             margin: 0,
                             display: "flex",
                             alignItems: "flex-end",
-                            gap: "20px"
+                            gap: "10px",
+                            whiteSpace: "nowrap",
+                            flexWrap: "nowrap"
                         }}>
-                            Contact Us <span style={{ fontSize: "0.8em" }}>↘</span>
+                            Contact Us <span style={{ fontSize: "0.7em" }}>↘</span>
                         </h1>
                     </motion.div>
                     <motion.div style={{ justifySelf: "end" }} variants={fadeInUp}>
@@ -96,7 +100,10 @@ export default function Contact() {
                             maxWidth: "400px",
                             fontWeight: 600
                         }}>
-                            Tell us about your project and we&apos;ll confirm availability within 24 hours.
+                            {state.succeeded
+                                ? "Thanks for reaching out! We'll be in touch shortly."
+                                : "Tell us about your project and we'll confirm availability within 24 hours."
+                            }
                         </p>
                     </motion.div>
                 </motion.div>
@@ -119,45 +126,75 @@ export default function Contact() {
                 >
 
                     {/* Form Area */}
-                    <motion.div style={{ display: "flex", flexDirection: "column", gap: "32px" }} className="contact-form" variants={fadeInUp}>
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="contact-form__row">
-                            <div className="contact-form__group">
-                                <label style={labelStyle as any}>Name</label>
-                                <input type="text" placeholder="Your full name" style={inputStyle} />
+                    <motion.form
+                        onSubmit={handleSubmit}
+                        style={{ display: "flex", flexDirection: "column", gap: "32px" }}
+                        className="contact-form"
+                        variants={fadeInUp}
+                    >
+                        {state.succeeded ? (
+                            <div style={{
+                                padding: "40px",
+                                backgroundColor: "var(--color-blue)",
+                                color: "var(--color-white)",
+                                fontFamily: "var(--font-header)",
+                                fontSize: "24px",
+                                textAlign: "center",
+                                fontWeight: 700
+                            }}>
+                                Message Sent Successfully!
                             </div>
-                            <div className="contact-form__group">
-                                <label style={labelStyle as any}>Email</label>
-                                <input type="email" placeholder="you@example.com" style={inputStyle} />
-                            </div>
-                        </div>
+                        ) : (
+                            <>
+                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="contact-form__row">
+                                    <div className="contact-form__group">
+                                        <label style={labelStyle as any}>Name</label>
+                                        <input type="text" name="name" placeholder="Your full name" style={inputStyle} required />
+                                        <ValidationError prefix="Name" field="name" errors={state.errors} />
+                                    </div>
+                                    <div className="contact-form__group">
+                                        <label style={labelStyle as any}>Email</label>
+                                        <input type="email" name="email" placeholder="you@example.com" style={inputStyle} required />
+                                        <ValidationError prefix="Email" field="email" errors={state.errors} />
+                                    </div>
+                                </div>
 
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="contact-form__row">
-                            <div className="contact-form__group">
-                                <label style={labelStyle as any}>Phone Number</label>
-                                <input type="tel" placeholder="+1 234 567 8900" style={inputStyle} />
-                            </div>
-                            <div className="contact-form__group">
-                                <label style={labelStyle as any}>Your Website / Instagram</label>
-                                <input type="text" placeholder="www.website.com/@yourname" style={inputStyle} />
-                            </div>
-                        </div>
+                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="contact-form__row">
+                                    <div className="contact-form__group">
+                                        <label style={labelStyle as any}>Phone Number</label>
+                                        <input type="tel" name="phone" placeholder="+1 234 567 8900" style={inputStyle} />
+                                        <ValidationError prefix="Phone" field="phone" errors={state.errors} />
+                                    </div>
+                                    <div className="contact-form__group">
+                                        <label style={labelStyle as any}>Your Website / Instagram</label>
+                                        <input type="text" name="social" placeholder="www.website.com/@yourname" style={inputStyle} />
+                                        <ValidationError prefix="Social" field="social" errors={state.errors} />
+                                    </div>
+                                </div>
 
-                        <div className="contact-form__group">
-                            <label style={labelStyle as any}>Tell Us More</label>
-                            <textarea
-                                placeholder="Drop the details here - what you need, the vision, timelines, and anything else we should know."
-                                style={{ ...inputStyle, minHeight: "200px", resize: "none" }}
-                            />
-                        </div>
+                                <div className="contact-form__group">
+                                    <label style={labelStyle as any}>Tell Us More</label>
+                                    <textarea
+                                        name="message"
+                                        placeholder="Drop the details here - what you need, the vision, timelines, and anything else we should know."
+                                        style={{ ...inputStyle, minHeight: "200px", resize: "none" }}
+                                        required
+                                    />
+                                    <ValidationError prefix="Message" field="message" errors={state.errors} />
+                                </div>
 
-                        <div style={{ marginTop: "16px" }}>
-                            <ArrowButton
-                                href={contactSettings?.cta_link || "/contact"}
-                                text={contactSettings?.cta_text || "START A PROJECT"}
-                                variant="primary"
-                            />
-                        </div>
-                    </motion.div>
+                                <div style={{ marginTop: "16px" }}>
+                                    <ArrowButton
+                                        href={contactSettings?.cta_link || "/contact"}
+                                        text={state.submitting ? "SENDING..." : (contactSettings?.cta_text || "START A PROJECT")}
+                                        variant="primary"
+                                        type="submit"
+                                        disabled={state.submitting}
+                                    />
+                                </div>
+                            </>
+                        )}
+                    </motion.form>
 
                     {/* Image Area */}
                     <motion.div

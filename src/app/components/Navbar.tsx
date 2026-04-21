@@ -90,6 +90,13 @@ export default function Navbar() {
     // Only apply transparent logic if on a detail page AND not scrolled past detail threshold AND not on mobile
     const showTransparent = isDetailPage && !isScrolled && !isMobile;
 
+    const handleLogoClick = (e: React.MouseEvent) => {
+        if (pathname === "/") {
+            e.preventDefault();
+            window.location.reload();
+        }
+    };
+
     return (
         <>
             <button
@@ -123,7 +130,7 @@ export default function Navbar() {
                 }}
             >
                 <div className="navbar__logo-wrapper">
-                    <Link href="/" className="navbar__logo" aria-label="Neversmall Studios home">
+                    <Link href="/" className="navbar__logo" aria-label="Neversmall Studios home" onClick={handleLogoClick}>
                         <Image
                             src="/images/logo.png"
                             alt="Neversmall Studios logo"
@@ -193,6 +200,22 @@ export default function Navbar() {
                     >
 
                         <div className="navbar__mobile-items">
+                            {/* Mobile Logo linked to home */}
+                            <Link
+                                href="/"
+                                className="navbar__mobile-link"
+                                style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}
+                                onClick={handleLogoClick}
+                            >
+                                <Image
+                                    src="/images/logo.png"
+                                    alt="Neversmall Studios logo"
+                                    width={150}
+                                    height={30}
+                                    priority
+                                />
+                            </Link>
+
                             <Link href="/#about" className="navbar__mobile-link" onClick={() => setIsMenuOpen(false)}>ABOUT</Link>
                             <Link href="/#projects" className="navbar__mobile-link" onClick={() => setIsMenuOpen(false)}>PROJECTS</Link>
                             <Link href="/#services" className="navbar__mobile-link" onClick={() => setIsMenuOpen(false)}>SERVICES</Link>

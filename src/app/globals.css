@@ -251,6 +251,8 @@ button {
 
 .navbar__logo {
   transition: filter 0.3s ease;
+  cursor: pointer;
+  display: block;
 }
 
 .navbar__logo img {
@@ -735,6 +737,65 @@ body.lightbox-open .navbar__hamburger {
 .about__button:hover {
   background-color: var(--color-black);
   transform: translateY(-2px);
+}
+
+@media (max-width: 1200px) and (min-width: 769px) {
+  .about {
+    padding-bottom: 60px;
+  }
+
+  .about__grid {
+    gap: 40px;
+    align-items: stretch;
+  }
+
+  .about__content {
+    gap: 20px;
+    justify-content: flex-start;
+  }
+
+  .about__subhead {
+    font-size: clamp(28px, 3.5vw, 40px);
+    margin-bottom: 0;
+  }
+
+  .about__body {
+    font-size: clamp(14px, 1.2vw, 16px);
+    line-height: 1.4;
+  }
+
+  .about__button {
+    margin-top: 32px;
+  }
+
+  .about__image-container {
+    aspect-ratio: 4 / 3.2;
+  }
+
+  .about__image-container img {
+    clip-path: none;
+  }
+
+  .team-section__grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .team-section__member-name {
+    font-size: 14px !important;
+  }
+
+  .team-section__member-role {
+    font-size: 11px !important;
+  }
+
+  .team-section__member-email {
+    font-size: 9px !important;
+  }
+
+  .team-section__name-box {
+    padding: 10px !important;
+  }
 }
 
 /* ============================================
