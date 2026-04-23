@@ -184,7 +184,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Were a team of creatives, storytellers, and marketers delivering full-service.
+              We're a team of creatives, storytellers, and marketers delivering full-service.
             </motion.p>
 
             <motion.div
